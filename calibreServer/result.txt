@@ -1,0 +1,16 @@
+books {
+	[
+		{
+			"title" 	: 	"Das Ende der Unschuld",
+			"author"	:	"Megan Abbott",
+			"description":	"Das Ende der Unschuld ist eine dunkle, raffinierte Geschichte, die Sie lange nicht loslassen wird." Val McDermid &lt;br&gt;&lt;/p&gt;&lt;p&gt;"Megan Abbott fängt auf wunderbare Weise ein, was es heißt, dreizehn zu sein den Zauber, die Intensität und die Verwirrung, die unbändige Kraft und fürchterliche Verletzlichkeit und packt das alles in einen hochspannenden Roman, den man nicht aus der Hand legen kann." Tana French, &lt;br&gt;&lt;/p&gt;&lt;p&gt;"Wird zu Recht mit Eugenidis Die Selbstmord-Schwestern verglichen." Marie Claire &lt;br&gt;&lt;/p&gt;&lt;p&gt;„Wie das erzählt und beschrieben wird, ist hochspannend und packend, auf eine sehr sanfte Art. Selten hat mich ein Buch so schnell eingefangen wie dieses. Von der ersten Seite an war ich wie verzaubert, war mitten unter den Menschen in dieser Kleinstadt, in der am helllichten Tag ein 13-jähriges Mädchen verschwindet. Es ist Fastenzeit, man versucht, sich zu mäßigen. Ist mir bei diesem Buch nicht gelungen. Ich habe es verschlungen. Aber ich werde es noch mal lesen. Und diese Lust auf ein zweites Mal habe ich nicht oft.",
+			"publisher"	:	"Kiepenheuer &amp; Witsch Verlag",
+			"tags" 		: ["Roman", "Krimi"],
+			"cover"		: 1,
+			"path"		: "/pfad/zum/ordner",
+			"title"		: "Das Ende der Unschuld - Megan Abbott",
+			"format"	: ["epub","pdf","mobi","rtf"],
+
+		},
+	]
+}

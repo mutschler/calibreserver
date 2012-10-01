@@ -1,0 +1,59 @@
+#include $os.path.join("data/header.tmpl")
+#set global $current="home"
+  <div role="main">
+    <div class="container">
+      
+        #for $x in $content:
+          <div class="row">
+            <div class="span2">
+              #if $x["has_cover"] == 1:
+                <img src='$x["path"]/cover.jpg' />
+              #end if
+            </div>
+
+            <div class="span10">
+              <h2>$x["title"]</h2>
+              <div class="author">
+                <h3>Author: <a href='/author?name=$x["author"]'>$x["author"]</a></h3>
+              </div>
+              #if $x["series_name"]:
+                <div class="series">
+                  Book $x["series_index"] of <a href='/series?name=$x["series_name"]'>$x["series_name"]</a>
+                </div>
+              #end if
+              <div class="download pull-right">
+                #for $format in $x["format"]:
+                  #if $format == "EPUB":
+                    <a href='$x["path"]/$x["format"][$format]' class="btn btn-success">$format</a>
+                  #else:
+                    <a href='$x["path"]/$x["format"][$format]' class="btn btn-inverse">$format</a>
+                  #end if
+                  
+                #end for
+              </div>
+
+              #if $x["tags"]:
+                <div class="tags">
+                  Tags: 
+                  #for $tag in $x["tags"]:
+                    <a href='/tags?name=$tag'>$tag</a>,
+                  #end for
+                </div>
+              #end if
+
+
+              <div class="description">
+                $x["description"]
+              </div>
+              
+              
+              
+
+              
+            </div>
+          </div>
+        #end for
+      
+    </div>
+  </div>
+#include $os.path.join("data/footer.tmpl")

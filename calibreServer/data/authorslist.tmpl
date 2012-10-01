@@ -1,0 +1,18 @@
+#include $os.path.join("data/header.tmpl")
+#set global $current="authorslist"
+  <div role="main">
+    <div class="container">
+        #for $x in $content:
+          <div class="row">
+            <div class="span2">
+              <ul>
+                  <li><a href='/author?name=$x["name"]'>$x["name"]</a></li>
+              </ul>
+            </div>
+          </div>
+        #end for
+      
+    </div>
+  </div>
+
+#include $os.path.join("data/footer.tmpl")

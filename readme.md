@@ -21,5 +21,5 @@ Geplant:
 
 ## Anforderungen
 
-Python 2.6+, bottle, sqlaclhemy
+Python 2.7+, bottle, sqlaclhemy
 

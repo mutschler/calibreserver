@@ -1,6 +1,18 @@
-from bottle import route, run, template, static_file, error, post, request
+import os
+import sys
+import logging
+
+from lib import pyservice
+from lib.bottle import route, run, template, static_file, error, post, request, TEMPLATE_PATH
 from calibre import helper
 from calibre import config
+
+
+
+
+# monkey patching for BaseHTTPRequestHandler.log_message
+def log_message(obj, format, *args):
+    logging.info("%s %s" % (obj.address_string(), format%args))
 
 @route('/authors')
 def index():
@@ -23,11 +35,6 @@ def index(name):
 def index(name=""):
 	content = helper.searchSeries(name.decode('utf-8'))
 	return template('books', content=content)
-
-# @route('/books')
-# def index():
-# 	content = helper.booksList(0)
-# 	return template('books', content=content)
 
 @route('/details/<bookid:int>')
 def limit(bookid=0):
@@ -53,12 +60,6 @@ def newest(limit=20):
 	content = helper.newestBooks(limit)
 	return template('books', content=content)
 
-# @post('/search/')
-# def index(name):
-# 	where     = request.forms.get('name')
-#     searchfor = request.forms.get('searchfor')
-#     content = helper.searchBooks(where, searchfor)
-#     return template('books', content=content)
 
 @route('/download/<filepath:path>')
 def server_static(filepath):
@@ -75,11 +76,35 @@ def login_submit():
 
 @route('/static/<filepath:path>')
 def server_static(filepath):
-    return static_file(filepath, root=config.STATICROOT)
+    return static_file(filepath, root=config.TEMPLATEDIR)
+
+@route('/favicon.ico')
+def server_static():
+    return static_file('favicon.ico', root=config.TEMPLATEDIR)
 
 @error(404)
 def error404(error):
     return 'Nothing here, sorry'
 
+class CalibreServerProcess(pyservice.Process):
 
-run(host='0.0.0.0', port=config.PORT, reloader=True)
+    pidfile = os.path.join(os.getcwd(), 'calibreserver.pid')
+    logfile = os.path.join(os.getcwd(), 'calibreserver.log')
+
+    def __init__(self):
+        super(CalibreServerProcess, self).__init__()
+        
+        from BaseHTTPServer import BaseHTTPRequestHandler
+        BaseHTTPRequestHandler.log_message = log_message
+            
+    def run(self):
+        logging.info('CalibreServer starting up')
+        TEMPLATE_PATH.append(config.TEMPLATEDIR)
+        run(host='0.0.0.0', port=config.PORT)
+
+if __name__ == '__main__':
+
+    if len(sys.argv) == 2 and sys.argv[1] in 'start stop restart status'.split():
+        pyservice.service('calibreserver.CalibreServerProcess', sys.argv[1])
+    else:
+        print 'usage: calibreserver <start,stop,restart,status>'

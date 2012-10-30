@@ -8,7 +8,7 @@
 /* ==|== primary styles =====================================================
    Author:
    ========================================================================== */
-
+/*
 .row{
   background: url("../img/shelf.png") top left no-repeat
 }
@@ -23,7 +23,11 @@ height: 105px;
   height: 105px;
   position: absolute;
 }
+*/
 
+.row{
+  margin-bottom: 10px
+}
 
 
 

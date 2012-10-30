@@ -19,9 +19,9 @@
   <meta name="viewport" content="width=device-width">
 
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory: mathiasbynens.be/notes/touch-icons -->
-  <link rel="stylesheet" href="/static/views/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/static/views/css/bootstrap-responsive.min.css">
-  <link rel="stylesheet" href="/static/views/css/style.css">
+  <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/bootstrap-responsive.min.css">
+  <link rel="stylesheet" href="/static/css/style.css">
 
   <!-- More ideas for your <head> here: h5bp.com/d/head-Tips -->
 
@@ -31,8 +31,8 @@
 
   <!-- All JavaScript at the bottom, except this Modernizr build.
        Modernizr enables HTML5 elements & feature detects for optimal performance.
-       Create your own custom Modernizr build: www.modernizr.com/download/ -->
-  <script src="/static/views/js/libs/modernizr-2.6.2.min.js"></script>
+       Create your own custom Modernizr build: www.modernizr.com/download/ 
+  <script src="/static/views/js/libs/modernizr-2.6.2.min.js"></script>-->
 </head>
 <body>
 <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display:none">
@@ -60,43 +60,84 @@
       <li><a href="/authors">Author List</a></li>
       <li><a href="#">Link</a></li>
     </ul>
-	<div class="pull-right">
-		<form action="/search" method="POST" class="navbar-search pull-left">
+  <div class="pull-right">
+    <form action="/search" method="POST" class="navbar-search pull-left">
       <select name="searchtype" id="searchtype" class="span1">
         <option value="authors">Author</option>
         <option value="description">Description</option>
         <option value="title">Title</option>
       </select>
 
-			<input name="searchfor" id="searchfor" type="text" class="search-query" placeholder="Search">
-		</form>
-	</div>
+      <input name="searchfor" id="searchfor" type="text" class="search-query" placeholder="Search">
+    </form>
+  </div>
   </div>
 </div>
   </header>
   <div role="main">
-	<div class="container">
-    <div class="row">
+  <div class="container">
 
 
 %for entry in content:
 
 
-      
-			<div class="span1">
-				%if entry.has_cover:
-        <a data-toggle="dafuq" href="/details/{{entry.id}}" data-target="#myModal"class="tooltiper" style="display: block" rel="tooltip" data-placement="bottom" data-original-title="{{entry.title}}">
-				<img src="/download/{{entry.path}}/cover.jpg" />
+    <div class="row">
+      <div class="span2">
+        %if entry.has_cover:
+        <img src="/download/{{entry.path}}/cover.jpg" />
+        %end if
+      </div>
+      <div class="span10">
+        <h1>{{entry.title}}</h1>
+        <h3><a href="/authors/{{entry.authors[0].name}}">{{entry.authors[0].name}}</a></h3>
+        %if entry.ratings:
+        %counter = 0
+        Rating:
+          %for rating in entry.ratings:
+          <a href="/rating/{{rating.rating/2}}">
+          %while counter < rating.rating/2:
+          <span class="icon-star"></span>
+          %counter = counter+1
+          %end while
         </a>
-				%end if
-			</div>
-      
-			
+          %end for
+        %end if
+        %if entry.series:
+          %for series in entry.series:
+            <br />Book {{entry.series_index}} of Series: <a href="/series/{{series.name}}">{{series.name}}</a>
+          %end for
+        %end if
+        %if entry.tags:
+        <p><b>Tags:</b>
+  %for tag in entry.tags:
+    <a href="/tag/{{tag.name}}">{{tag.name}}</a>
+  %end for
+  </p>
+%end if
+        <div class="form-actions btn-toolbar">
+            %for download in entry.data:
+              %if download.format == "EPUB":
+                <a class="btn btn-success" href="/download/{{entry.path}}/{{download.name}}.{{download.format.lower()}}">
+                 {{download.format}}
+                </a>
+              %else:
+                <a class="btn " href="/download/{{entry.path}}/{{download.name}}.{{download.format.lower()}}">
+                 {{download.format}}
+                </a>
+              %end if
+            
+             %end for
 
-%end for
+
+          <a data-toggle="dafuq" href="/details/{{entry.id}}" data-target="#myModal" class="btn btn-primary">Info</a>
+        </div>
+       
+      </div>
     </div>
 
-	</div>
+%end for
+
+  </div>
   </div>
   <footer>
 
@@ -106,12 +147,10 @@
   <!-- JavaScript at the bottom for fast page loading -->
 
   <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
-  <script src="/static/views/js/libs/jquery-1.8.1.min.js"></script>
+  <script src="/static/js/libs/jquery-1.8.1.min.js"></script>
 
   <!-- scripts concatenated and minified via build script -->
-  <script src="/static/views/js/bootstrap.min.js"></script>
-  <script src="/static/views/js/plugins.js"></script>
-  <script src="/static/views/js/script.js"></script>  
+  <script src="/static/js/bootstrap.min.js"></script>
   <script type="text/javascript">
   $("a[data-toggle=dafuq]").click(function(event) {
 event.preventDefault()
@@ -131,5 +170,3 @@ $(target).modal('show')
 </body>
 </html>
 
-
-	

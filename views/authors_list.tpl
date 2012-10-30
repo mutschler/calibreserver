@@ -19,9 +19,9 @@
   <meta name="viewport" content="width=device-width">
 
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory: mathiasbynens.be/notes/touch-icons -->
-  <link rel="stylesheet" href="/static/views/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/static/views/css/bootstrap-responsive.min.css">
-  <link rel="stylesheet" href="/static/views/css/style.css">
+  <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/bootstrap-responsive.min.css">
+  <link rel="stylesheet" href="/static/css/style.css">
 
   <!-- More ideas for your <head> here: h5bp.com/d/head-Tips -->
 
@@ -32,7 +32,7 @@
   <!-- All JavaScript at the bottom, except this Modernizr build.
        Modernizr enables HTML5 elements & feature detects for optimal performance.
        Create your own custom Modernizr build: www.modernizr.com/download/ -->
-  <script src="/static/views/js/libs/modernizr-2.6.2.min.js"></script>
+  <script src="/static/js/libs/modernizr-2.6.2.min.js"></script>
 </head>
 <body>
   <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
@@ -83,12 +83,12 @@
   <!-- JavaScript at the bottom for fast page loading -->
 
   <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
-  <script src="/static/views/js/libs/jquery-1.8.1.min.js"></script>
+  <script src="/static/js/libs/jquery-1.8.1.min.js"></script>
 
   <!-- scripts concatenated and minified via build script -->
-  <script src="/static/views/js/bootstrap.min.js"></script>
-  <script src="/static/views/js/plugins.js"></script>
-  <script src="/static/views/js/script.js"></script>  
+  <script src="/static/js/bootstrap.min.js"></script>
+  <script src="/static/js/plugins.js"></script>
+  <script src="/static/js/script.js"></script>  
   <!-- end scripts -->
 
 

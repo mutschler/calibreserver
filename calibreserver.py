@@ -43,7 +43,7 @@ def limit(bookid=0):
 
 @route('/books')
 @route('/books/<limit:int>')
-def limit(limit=300):
+def limit(limit=config.ALL_BOOKS):
 	content = helper.booksList(limit)
 	return template('books', content=content)
 
@@ -56,7 +56,7 @@ def limit(count=5):
 @route('/')
 @route('/books/new')
 @route('/books/new/<limit:int>')
-def newest(limit=20):
+def newest(limit=config.NEWEST_BOOKS):
 	content = helper.newestBooks(limit)
 	return template('books', content=content)
 
@@ -81,6 +81,39 @@ def server_static(filepath):
 @route('/favicon.ico')
 def server_static():
     return static_file('favicon.ico', root=config.TEMPLATEDIR)
+
+
+if config.WEB_ADMIN:
+    @route('/admin')
+    def index():
+        return template('login', error=False)
+
+    @post('/admin') # or @route('/login', method='POST')
+    def login_submit():
+        username = request.forms.get('username')
+        password = request.forms.get('password')
+        if (username == config.USER and password == config.PASS):
+            content = config
+            return template('admin', content=content)
+        else:
+            return template('login', error=True)
+    
+    @post('/admin/save') # or @route('/login', method='POST')
+    def save_settings():
+        configdict = {}
+        configdict["USER"] = request.forms.get('username')
+        configdict["PASS"] = request.forms.get('password')
+        configdict["PORT"] = request.forms.get('port')
+        configdict["DB_ROOT"] = request.forms.get('dbroot')
+        configdict["NEWEST_BOOKS"] = request.forms.get('newbooks')
+        configdict["ALL_BOOKS"] = request.forms.get('allbooks')
+        if (request.forms.get('webadmin') == "on"):
+            configdict["WEB_ADMIN"] = True
+        else:
+            configdict["WEB_ADMIN"] = False
+        configdict["TEMPLATEDIR"] = config.TEMPLATEDIR
+        response = config.save_config(configdict)
+        return response
 
 @error(404)
 def error404(error):
@@ -108,3 +141,4 @@ if __name__ == '__main__':
         pyservice.service('calibreserver.CalibreServerProcess', sys.argv[1])
     else:
         print 'usage: calibreserver <start,stop,restart,status>'
+#run(host='0.0.0.0', port=config.PORT)

@@ -1,6 +1,6 @@
-from lib.sqlalchemy import *
-from lib.sqlalchemy.ext.declarative import declarative_base
-from lib.sqlalchemy.orm import *
+from sqlalchemy import *
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import *
 from calibre import config
 import os
 

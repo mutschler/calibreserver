@@ -222,16 +222,16 @@ class ServiceControl(object):
     def __init__(self, process_path):
         self.process = load_process(process_path)
         if not callable(self.process):
-            raise RuntimeError("The process {} is not valid".format(self.process_path))    
+            raise RuntimeError("The process {0} is not valid".format(self.process_path))    
     
     def start(self):
         
-        print "Starting process with {}...".format(self.process.__name__)
+        print "Starting process with {0}...".format(self.process.__name__)
         Service(self.process).start()
                 
     def stop(self):
 
-        print "Stopping process {}...".format(self.process.__name__)
+        print "Stopping process {0}...".format(self.process.__name__)
         Service(self.process).stop()
             
     def restart(self):
@@ -245,7 +245,7 @@ class ServiceControl(object):
         if pid:
             try:
                 os.kill(pid, 0)
-                print 'Process {} is running, pid: {}'.format(srv.process.__name__, pid)
+                print 'Process {0} is running, pid: {1}'.format(srv.process.__name__, pid)
                 return
             except (OSError, TypeError):
                 pass
@@ -328,7 +328,7 @@ class Pidfile(object):
 #   Logging
 #
         
-DEFAULT_FORMAT = "%(asctime)s pid:%(process)d/{} <%(levelname)s> %(message)s"
+DEFAULT_FORMAT = "%(asctime)s pid:%(process)d/{0} <%(levelname)s> %(message)s"
 
 def set_logging(process_name, logfile, output_format=DEFAULT_FORMAT, level=logging.DEBUG):
     ''' set logging '''
@@ -354,7 +354,7 @@ def load_process(process_path):
     http://www.python.org/dev/peps/pep-0338
     '''
     if '.' not in process_path:
-        raise RuntimeError("Invalid process path: {}".format(process_path))
+        raise RuntimeError("Invalid process path: {0}".format(process_path))
 
     module_name, process_name = process_path.rsplit('.', 1)
     try:
@@ -369,7 +369,7 @@ def load_process(process_path):
             # If the bottommost frame in our stack was in pkgutil,
             # then we can safely say that this ImportError occurred
             # because the top level class path was not found.
-            raise RuntimeError("Unable to load process path: {}:\n{}".format(process_path, e))
+            raise RuntimeError("Unable to load process path: {0}:\n{1}".format(process_path, e))
         else:
             # If the ImportError occurred further down,
             # raise original exception.
@@ -377,7 +377,7 @@ def load_process(process_path):
     try:
         return module[process_name]
     except KeyError, e:
-        raise RuntimeError("Unable to find process in module: {}".format(process_path))
+        raise RuntimeError("Unable to find process in module: {0}".format(process_path))
                     
 def service(process=None, action=None):
     ''' control service '''
@@ -392,7 +392,7 @@ def main():
 
     parser = argparse.ArgumentParser(prog="pyservice", add_help=False)
     parser.add_argument("-v", "--version",
-        action="version", version="%(prog)s, v.{}".format(__version__))
+        action="version", version="%(prog)s, v.{0}".format(__version__))
     parser.add_argument("-h", "--help", 
         action="store_true", help="show program's help text and exit")
     parser.add_argument("process", nargs='?', help="""
@@ -414,7 +414,7 @@ def main():
 
     if args.process and args.action in "start stop restart status".split():
         if not args.process:
-            parser.error("You need to specify a process for {}".format(args.action))
+            parser.error("You need to specify a process for {0}".format(args.action))
         service(args.process, args.action)
     else:
         parser.print_help()

@@ -5,9 +5,25 @@ from calibre import config
 import os
 
 dbpath = os.path.join(config.DB_ROOT, "metadata.db")
-engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
+engine = create_engine('sqlite:///{0}'.format(dbpath), echo=True)
 
 Base = declarative_base()
+
+# class User(Base):
+# 	__tablename__ = 'users'
+
+# 	id = Column(Integer, primary_key=True)
+# 	name = Column(String)
+# 	fullname = Column(String)
+# 	password = Column(String)
+
+# 	def __init__(self, name, fullname, password):
+# 		self.name = name
+# 		self.fullname = fullname
+# 		self.password = password
+
+# 	def __repr__(self):
+# 		return "<User('%s','%s', '%s')>" % (self.name, self.fullname, self.password)
 
 books_authors_link = Table('books_authors_link', Base.metadata,
 	Column('book', Integer, ForeignKey('books.id'), primary_key=True),
@@ -17,16 +33,6 @@ books_authors_link = Table('books_authors_link', Base.metadata,
 books_tags_link = Table('books_tags_link', Base.metadata,
 	Column('book', Integer, ForeignKey('books.id'), primary_key=True),
 	Column('tag', Integer, ForeignKey('tags.id'), primary_key=True)
-	)
-
-books_series_link = Table('books_series_link', Base.metadata,
-	Column('book', Integer, ForeignKey('books.id'), primary_key=True),
-	Column('series', Integer, ForeignKey('series.id'), primary_key=True)
-	)
-
-books_ratings_link = Table('books_ratings_link', Base.metadata,
-	Column('book', Integer, ForeignKey('books.id'), primary_key=True),
-	Column('rating', Integer, ForeignKey('ratings.id'), primary_key=True)
 	)
 
 
@@ -65,39 +71,15 @@ class Authors(Base):
 	sort = Column(String)
 	link = Column(String)
 
+	#books1 = relationship('Books', secondary=books_authors_link, backref='authors')
+
 	def __init__(self, name, sort, link):
 		self.name = name
 		self.sort = sort
-		self.sort = link
+		self.link = link
 
 	def __repr__(self):
 		return u"<Authors('{0},{1}{2}')>".format(self.name, self.sort, self.link)
-
-class Series(Base):
-	__tablename__ = 'series'
-
-	id = Column(Integer, primary_key=True)
-	name = Column(String)
-	sort = Column(String)
-
-	def __init__(self, name, sort):
-		self.name = name
-		self.sort = sort
-
-	def __repr__(self):
-		return u"<Series('{0},{1}')>".format(self.name, self.sort)
-
-class Ratings(Base):
-	__tablename__ = 'ratings'
-
-	id = Column(Integer, primary_key=True)
-	rating = Column(Integer)
-
-	def __init__(self,rating):
-		self.rating = rating
-
-	def __repr__(self):
-		return u"<Ratings('{0}')>".format(self.rating)
 
 class Data(Base):
 	__tablename__ = 'data'
@@ -107,6 +89,8 @@ class Data(Base):
 	format = Column(String)
 	uncompressed_size = Column(Integer)
 	name = Column(String)
+
+	#books1 = relationship('Books', secondary=books_authors_link, backref='authors')
 
 	def __init__(self, book, format, uncompressed_size, name):
 		self.book = book
@@ -123,10 +107,6 @@ class Books(Base):
 	id = Column(Integer,primary_key=True)
 	title = Column(String)
 	sort = Column(String)
-	timestamp = Column(String)
-	pubdate = Column(String)
-	series_index = Column(String)
-	last_modified = Column(String)
 	path = Column(String)
 	has_cover = Column(Integer)
 
@@ -134,23 +114,17 @@ class Books(Base):
 	tags = relationship('Tags', secondary=books_tags_link, backref='books')
 	comments = relationship('Comments', backref='books')
 	data = relationship('Data', backref='books')
-	series = relationship('Series', secondary=books_series_link, backref='books')
-	ratings = relationship('Ratings', secondary=books_ratings_link, backref='books')
 
-	def __init__(self, title, sort, timestamp, pubdate, series_index, last_modified, path, has_cover, authors, tags):
+	def __init__(self, title, sort, path, has_cover, authors, tags):
 		self.title = title
 		self.sort = sort
-		self.timestamp = timestamp
-		self.pubdate = pubdate
-		self.series_index = series_index
-		self.last_modified = last_modified
 		self.path = path
 		self.has_cover = has_cover
 		self.tags = tags
 
 
 	def __repr__(self):
-		return u"<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.timestamp, self.pubdate, self.series_index, self.last_modified ,self.path, self.has_cover)
+		return u"<Books('{0},{1}{2}{3}')>".format(self.title, self.sort, self.path, self.has_cover)
 
 
 
@@ -158,3 +132,39 @@ Base.metadata.create_all(engine)
 Session = sessionmaker()
 Session.configure(bind=engine)
 session = Session()
+
+# ed_user = User('ed', 'Ed Jones', 'edspassword')
+# session.add(ed_user)
+# our_user = session.query(Books).filter(Books.title.like('%Kind%'))#.first() 
+# print dir(our_user)
+
+# for a in our_user:
+# 	print u"Titel: {0}".format(a.title)
+# 	if a.authors:
+# 		print u"Author: {0}".format(a.authors[0].name)
+# 		#print a.authors[0].name
+# 	# for cimment in a.comments:
+# 	# 	print cimment.text
+# 	tags = []
+# 	for tag in a.tags:
+# 		tags.append(tag.name)
+# 	if tags:
+# 		print u"tags: {0}".format(tags)
+
+# print our_user.title, our_user.authors, our_user.tags
+# for a in our_user.authors:
+# 	print a.name
+
+# for c in our_user.comments:
+# 	print c.text
+
+# for b in our_user.tags:
+# 	print b.name
+
+result = (
+    session.query(Books)
+        .filter(Books.id == 8).first()
+)
+
+for a in result.comments:
+	print a.text

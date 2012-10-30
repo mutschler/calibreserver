@@ -1,35 +1,94 @@
 from calibre import db
-from calibre.logger import logger
 from calibre import config
 
 import os
 
+def searchAuthor(authorname):
+	result = (
+    db.session.query(db.Books)
+        .filter(db.Books.authors.any(db.Authors.name.like(u'%{0}%'.format(authorname))))
+        .all()
+	)
+	return result
 
+def searchTitle(titlename):
+	result = (
+    db.session.query(db.Books)
+        .filter(db.Books.title.like(u'%{0}%'.format(titlename)))
+        .all()
+	)
+	return result
 
+def searchDescription(searchfor):
+	result = (
+    db.session.query(db.Books)
+        .filter(db.Books.comments.any(db.Comments.text.like(u'%{0}%'.format(searchfor))))
+        .all()
+	)
+	return result
 
-def getBookByRating(rating):
-	myDB = db.DBConnection()
-	
-	response = myDB.select("SELECT * from books_ratings_link WHERE rating = {0}".format(rating))
-	logger.debug(u"response: ".format(response))
-	
-	#get infos for every book in response
-	books = []
-	for result in response:
-		rating = result["rating"]
-		book_id = result["book"]
-		#get book name and infos...
-		book = myDB.select("SELECT * from books WHERE id = {0}".format(book_id))
-		logger.debug(u"book dict: {}".format(book))
-		logger.info(u"Rating: {0:02} Title: {1}".format(rating, book[0]["title"]))
-		path = os.path.join(config.DB_ROOT, book[0]["path"])
-		data = myDB.select("SELECT * from data WHERE book = {0}".format(book_id))
-		logger.debug(u"data dict: {}".format(data))
-		for result in data:
-			logger.info(u"ebook: " + os.path.join(path, result["name"]) + ".{0}".format(result["format"]))
-		if book[0]["has_cover"]:
-			logger.info(u"Cover: " + os.path.join(path, "cover.jpg"))
+def searchTag(tagname):
+	result = (
+    db.session.query(db.Books)
+        .filter(db.Books.tags.any(db.Tags.name.like(u'%{0}%'.format(tagname))))
+        .all()
+	)
+	return result
 
-			#return os.path.join(path, "cover.jpg"
-			books.append(os.path.join(path, "cover.jpg"))
-	return books
+def searchSeries(seriesname):
+	result = (
+    db.session.query(db.Books)
+        .filter(db.Books.series.any(db.Series.name.like(u'%{0}%'.format(seriesname))))
+        .all()
+	)
+	return result
+
+def authorsList():
+	result = (
+    db.session.query(db.Authors)
+        .order_by(db.Authors.sort)
+        .all()
+	)
+	return result
+
+def ratingsList(rating):
+	rating = rating*2
+	result = (
+    db.session.query(db.Books)
+        .filter(db.Books.ratings.any(db.Ratings.rating == rating))
+        .all()
+	)
+	return result
+
+def bookDetails(bookid):
+	result = (
+	    db.session.query(db.Books)
+	        .filter(db.Books.id == bookid).first()
+	)
+	return result
+
+def booksList(limit):
+	result = (
+    db.session.query(db.Books)
+        .order_by(db.Books.sort)
+        .limit(limit)
+	)
+	return result
+
+def newestBooks(limit):
+	result = (
+    db.session.query(db.Books)
+        .order_by(db.Books.last_modified)
+        .limit(limit)
+	)
+	return result
+
+def doSearch(searchfor, searchtype):
+	if (searchtype == "authors"):
+		result = searchAuthor(searchfor)
+	if (searchtype == "description"):
+		result = searchDescription(searchfor)
+	if (searchtype == "title"):
+		result = searchTitle(searchfor)
+
+	return result

@@ -150,7 +150,7 @@ class Books(Base):
 
 
 	def __repr__(self):
-		return u"<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.timestamp, self.pubdate, self.series_index, self.last_modified ,self.path, self.has_cover)
+		return u"<Books('{0},{1}{2}{3}{4}{5}{6}{7}')>".format(self.title, self.sort, self.timestamp, self.pubdate, self.series_index, self.last_modified ,self.path, self.has_cover)
 
 
 

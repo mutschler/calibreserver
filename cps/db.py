@@ -1,10 +1,9 @@
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
-from calibre import config
 import os
 
-dbpath = os.path.join(config.DB_ROOT, "metadata.db")
+dbpath = "metadata.db"
 engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
 
 Base = declarative_base()
@@ -43,12 +42,12 @@ class Comments(Base):
 
 	def __repr__(self):
 		return u"<Comments({0})>".format(self.text)
-		
+
 
 class Tags(Base):
 	__tablename__ = 'tags'
 
-	id = Column(Integer, primary_key=True)
+	id = Column(Integer, primary_key=True, autoincrement=True)
 	name = Column(String)
 
 	def __init__(self, name):

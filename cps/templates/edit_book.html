@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bootstrap 101 Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+      {% if book %}
+        <form role="form" action="{{ url_for('edit_book', book_id=book.id) }}" method="post">
+          <div class="form-group">
+            <label for="bookName">Book Title</label>
+            <input type="text" class="form-control" name="book_title" id="bookName" value="{{book.title}}">
+          </div>
+          <div class="form-group">
+            <label for="bookAuthor">Author</label>
+              {% if book.authors|length > 1 %}
+                {% for author in book.authors %}
+                  <p>{{author.name.join(" & ")}}</p>
+                {% endfor %}
+              {% endif %}
+            <input type="text" class="form-control" name="author_name" id="bookAuthor" value="{{book.authors[0].name}}">
+          </div>
+          <div class="form-group">
+            <label for="bookAuthor">Description</label>
+            <textarea class="form-control" name="description" rows="7">{% if book.comments %}{{book.comments[0].text}}{%endif%}</textarea>
+          </div>
+          <div class="form-group">
+            <label for="bookAuthor">Tags</label>
+            <input type="text" class="form-control" name="tags" id="bookAuthor" value="{% for tag in book.tags %}{{tag.name.strip()}}, {% endfor %}">
+          </div>
+
+            <div class="form-group">
+              <label for="bookAuthor">Series</label>
+              <input type="text" class="form-control" name="series" value="{% if book.series %}{{book.series[0].name}}{% endif %}">
+            </div>
+            <div class="form-group">
+              <label for="bookAuthor">Series id</label>
+              <input type="text" class="form-control" name="series_index" value="{{book.series_index}}">
+            </div>
+            <div class="form-group">
+              <label for="bookAuthor">Rating</label>
+              <input type="text" class="form-control" name="rating" value="{% if book.ratings %}{{book.ratings[0].rating}}{% endif %}">
+            </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox"> Check me out
+            </label>
+          </div>
+          <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+      {% endif %}
+      </div>
+    </div>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  </body>
+</html>

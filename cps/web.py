@@ -1,18 +1,41 @@
 from flask import Flask, render_template, session, request, redirect, url_for, send_from_directory, make_response
 from cps import db
 import os
+from sqlalchemy.sql.expression import func
 
 
 app = (Flask(__name__))
 
 
 
-
+@app.route("/feed")
+def feed_index():
+    entries = db.session.query(db.Books).limit(50)
+    xml = render_template('feed.xml', entries=entries)
+    response= make_response(xml)
+    response.headers["Content-Type"] = "application/xml"
+    return response
 
 @app.route("/")
 def index():
-    entries = db.session.query(db.Books).all()
-    return render_template('index.html', entries=entries)
+    random = db.session.query(db.Books).order_by(func.random()).limit(6)
+    entries = db.session.query(db.Books).limit(50)
+    return render_template('index.html', random=random, entries=entries)
+
+@app.route("/hot")
+def hot_books():
+    random = db.session.query(db.Books).order_by(func.random()).limit(6)
+    entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).limit(50)
+    return render_template('index.html', random=random, entries=entries)
+
+@app.route("/category/<name>")
+def category(name):
+    random = db.session.query(db.Books).order_by(func.random()).limit(6)
+    if name != "all":
+        entries = db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.name.like("%" +name + "%" ))).all()
+    else:
+        entries = db.session.query(db.Books).all()
+    return render_template('index.html', random=random, entries=entries)
 
 @app.route("/admin/")
 def admin():

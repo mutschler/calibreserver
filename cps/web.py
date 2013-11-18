@@ -51,6 +51,8 @@ def search():
         random = db.session.query(db.Books).order_by(func.random()).limit(6)
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%"+term+"%")),db.Books.authors.any(db.Authors.name.like("%"+term+"%")),db.Books.title.like("%"+term+"%"))).all()
         return render_template('search.html', searchterm=term, entries=entries)
+    else:
+        return render_template('search.html', searchterm="")
 
 @app.route("/author/<name>")
 def author(name):

@@ -1,6 +1,7 @@
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
+from sqlalchemy_fulltext import FullText, FullTextSearch
 import os
 
 dbpath = "metadata.db"
@@ -56,8 +57,9 @@ class Tags(Base):
 	def __repr__(self):
 		return u"<Tags('{0})>".format(self.name)
 
-class Authors(Base):
+class Authors(FullText, Base):
 	__tablename__ = 'authors'
+	__fulltext_columns__ = ('name')
 
 	id = Column(Integer, primary_key=True)
 	name = Column(String)
@@ -116,8 +118,9 @@ class Data(Base):
 	def __repr__(self):
 		return u"<Data('{0},{1}{2}{3}')>".format(self.book, self.format, self.uncompressed_size, self.name)
 
-class Books(Base):
+class Books(FullText, Base):
 	__tablename__ = 'books'
+	__fulltext_columns__ = ('title', 'authors')
 
 	id = Column(Integer,primary_key=True)
 	title = Column(String)

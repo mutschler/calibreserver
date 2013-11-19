@@ -37,9 +37,11 @@
       <uri>{{entry.authors[0].name}}</uri>
     </author>
     <language>{{entry.language}}</language>
+    {% for tag in entry.tags %}
     <category scheme="http://www.bisg.org/standards/bisac_subject/index.html"
-              term="FIC020000"
-              label="FICTION / Men's Adventure"/>
+              term="{{tag.name}}"
+              label="{{tag.name}}"/>
+    {% endfor %}
     <summary>{% if entry.comments[0] %}{{entry.comments[0].text|striptags}}{% endif %}</summary>
     {% if entry.has_cover %}
     <link rel="http://opds-spec.org/image"

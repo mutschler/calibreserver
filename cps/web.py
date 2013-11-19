@@ -56,9 +56,16 @@ def feed_index():
     response.headers["Content-Type"] = "application/xml"
     return response
 
+@app.route("/feed/osd")
+def feed_osd():
+    xml = render_template('osd.xml')
+    response= make_response(xml)
+    response.headers["Content-Type"] = "application/xml"
+    return response
+
 @app.route("/feed/search", methods=["GET"])
 def feed_search():
-    term = request.args.get("q")
+    term = request.args.get("query")
     if term:
         random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%"+term+"%")),db.Books.authors.any(db.Authors.name.like("%"+term+"%")),db.Books.title.like("%"+term+"%"))).all()
@@ -131,7 +138,7 @@ def title_sort(title):
 
 @app.route("/search", methods=["GET"])
 def search():
-    term = request.args.get("term")
+    term = request.args.get("query")
     if term:
         random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%"+term+"%")),db.Books.authors.any(db.Authors.name.like("%"+term+"%")),db.Books.title.like("%"+term+"%"))).all()

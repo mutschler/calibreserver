@@ -2,30 +2,26 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>urn:uuid:2853dacf-ed79-42f5-8e8a-a7bb3d1ae6a2</id>
   <link rel="self"
-        href="/opds-catalogs/root.xml"
+        href="{{url_for('feed_index')}}"
         type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
   <link rel="start"
-        href="/opds-catalogs/root.xml"
+        href="{{url_for('feed_index')}}"
         type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
-  <link rel="next" title="Nächste Seite" type="application/atom+xml;profile=opds-catalog" href="{{next_url}}"/>
+  <link rel="related"
+        href="{{url_for('feed_index')}}"
+        type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+  <link rel="up"
+        href="{{url_for('feed_index')}}"
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="search"
+        href="{{url_for('feed_osd')}}"
+        type="application/opensearchdescription+xml"/>
   <title>library</title>
   <updated>2010-01-10T10:03:10Z</updated>
   <author>
     <name>Spec Writer</name>
     <uri>http://opds-spec.org</uri>
   </author>
-  <link rel="related"
-        href="{{url_for('feed_index')}}"
-        type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
-  <link rel="self"
-        href="/opds-catalogs/unpopular.xml"
-        type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
-  <link rel="start"
-        href="/opds-catalogs/root.xml"
-        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
-  <link rel="up"
-        href="/opds-catalogs/root.xml"
-        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
 
   {% for entry in entries %}
   <entry>

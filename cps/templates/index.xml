@@ -14,7 +14,7 @@
         href="{{url_for('feed_index')}}"
         type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
   <link rel="search"
-        href="{{url_for('feed_search')}}"
+        href="{{url_for('feed_osd')}}"
         type="application/opensearchdescription+xml"/>
   <title>eBokee</title>
   <updated>2010-01-10T10:03:10Z</updated>

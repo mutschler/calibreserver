@@ -62,9 +62,12 @@ def feed_search():
     if term:
         random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%"+term+"%")),db.Books.authors.any(db.Authors.name.like("%"+term+"%")),db.Books.title.like("%"+term+"%"))).all()
-        return render_template('search.html', searchterm=term, entries=entries)
+        xml = render_template('feed.xml', searchterm=term, entries=entries)
     else:
-        return render_template('search.html', searchterm="")
+        xml = render_template('feed.xml', searchterm="")
+    response= make_response(xml)
+    response.headers["Content-Type"] = "application/xml"
+    return response
 
 @app.route("/feed/new")
 def feed_new():

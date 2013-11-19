@@ -20,6 +20,10 @@ def feed_index():
 def index():
     random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
     entries = db.session.query(db.Books).limit(config.NEWEST_BOOKS)
+    print request.user_agent.__dict__
+    print request.user_agent
+    #{'platform': 'linux', 'version': '528.5', 'string': 'Mozilla/5.0 (Linux; U; de-DE) AppleWebKit/528.5+ (KHTML, like Gecko, Safari/528.5+) Version/4.0 Kindle/3.0 (screen 600x800; rotate)', 'language': 'de-DE', 'browser': 'safari'}
+    #Mozilla/5.0 (Linux; U; de-DE) AppleWebKit/528.5+ (KHTML, like Gecko, Safari/528.5+) Version/4.0 Kindle/3.0 (screen 600x800; rotate)
     return render_template('index.html', random=random, entries=entries)
 
 @app.route("/hot")

@@ -7,7 +7,8 @@
   <link rel="start"
         href="/opds-catalogs/root.xml"
         type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
-  <title>eBokee</title>
+  <link rel="next" title="Nächste Seite" type="application/atom+xml;profile=opds-catalog" href="{{next_url}}"/>
+  <title>library</title>
   <updated>2010-01-10T10:03:10Z</updated>
   <author>
     <name>Spec Writer</name>

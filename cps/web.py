@@ -2,16 +2,94 @@ from flask import Flask, render_template, session, request, redirect, url_for, s
 from cps import db, config
 import os
 from sqlalchemy.sql.expression import func
-
+from math import ceil
 
 app = (Flask(__name__))
 
 
+#simple pagination for the feed
+class Pagination(object):
+
+    def __init__(self, page, per_page, total_count):
+        self.page = page
+        self.per_page = per_page
+        self.total_count = total_count
+
+    @property
+    def pages(self):
+        return int(ceil(self.total_count / float(self.per_page)))
+
+    @property
+    def has_prev(self):
+        return self.page > 1
+
+    @property
+    def has_next(self):
+        return self.page < self.pages
+
+    def iter_pages(self, left_edge=2, left_current=2,
+                   right_current=5, right_edge=2):
+        last = 0
+        for num in xrange(1, self.pages + 1):
+            if num <= left_edge or \
+               (num > self.page - left_current - 1 and \
+                num < self.page + right_current) or \
+               num > self.pages - right_edge:
+                if last + 1 != num:
+                    yield None
+                yield num
+                last = num
+
+##pagination links in jinja
+def url_for_other_page(page):
+    args = request.view_args.copy()
+    args['page'] = page
+    return url_for(request.endpoint, **args)
+
+app.jinja_env.globals['url_for_other_page'] = url_for_other_page
+
 
 @app.route("/feed")
 def feed_index():
-    entries = db.session.query(db.Books).limit(config.NEWEST_BOOKS)
-    xml = render_template('feed.xml', entries=entries)
+    xml = render_template('index.xml')
+    response= make_response(xml)
+    response.headers["Content-Type"] = "application/xml"
+    return response
+
+@app.route("/feed/search", methods=["GET"])
+def feed_search():
+    term = request.args.get("q")
+    if term:
+        random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
+        entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%"+term+"%")),db.Books.authors.any(db.Authors.name.like("%"+term+"%")),db.Books.title.like("%"+term+"%"))).all()
+        return render_template('search.html', searchterm=term, entries=entries)
+    else:
+        return render_template('search.html', searchterm="")
+
+@app.route("/feed/new")
+def feed_new():
+    off = request.args.get("start_index")
+    if off:
+        entries = db.session.query(db.Books).order_by(db.Books.last_modified.desc()).offset(off).limit(config.NEWEST_BOOKS)
+    else:
+        entries = db.session.query(db.Books).order_by(db.Books.last_modified.desc()).limit(config.NEWEST_BOOKS)
+        off = 0
+    xml = render_template('feed.xml', entries=entries, next_url="/feed/new?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+    response= make_response(xml)
+    response.headers["Content-Type"] = "application/xml"
+    return response
+
+
+@app.route("/feed/hot")
+def feed_hot():
+    off = request.args.get("start_index")
+    if off:
+        entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).offset(off).limit(config.NEWEST_BOOKS)
+    else:
+        entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).limit(config.NEWEST_BOOKS)
+        off = 0
+
+    xml = render_template('feed.xml', entries=entries, next_url="/feed/hot?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response= make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -19,7 +97,7 @@ def feed_index():
 @app.route("/")
 def index():
     random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
-    entries = db.session.query(db.Books).limit(config.NEWEST_BOOKS)
+    entries = db.session.query(db.Books).order_by(db.Books.last_modified.desc()).limit(config.NEWEST_BOOKS)
     print request.user_agent.__dict__
     print request.user_agent
     #{'platform': 'linux', 'version': '528.5', 'string': 'Mozilla/5.0 (Linux; U; de-DE) AppleWebKit/528.5+ (KHTML, like Gecko, Safari/528.5+) Version/4.0 Kindle/3.0 (screen 600x800; rotate)', 'language': 'de-DE', 'browser': 'safari'}

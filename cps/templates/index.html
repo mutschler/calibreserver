@@ -77,6 +77,7 @@
                 <div class="meta">
                   <p class="title">{{entry.title}}</p>
                   <p class="author"><a href="{{url_for('author', name=entry.authors[0].name) }}">{{entry.authors[0].name}}</a></p>
+                  {% if entry.ratings.__len__() > 0 %}
                   <div class="rating">
                     {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
                       <span class="glyphicon glyphicon-star good"></span>
@@ -87,6 +88,7 @@
                       {% endif %}
                     {% endfor %}
                   </div>
+                  {% endif %}
                 </div>
               </div>
                 <!-- <p><a href="{{ url_for('edit_book', book_id=entry.id) }}">{{entry.authors[0].name}}: {{entry.title}}</a></p> -->
@@ -109,7 +111,7 @@
                 <div class="meta">
                   <p class="title">{{entry.title}}</p>
                   <p class="author"><a href="{{url_for('author', name=entry.authors[0].name) }}">{{entry.authors[0].name}}</a></p>
-                  {% if entry.ratings[0] %}
+                  {% if entry.ratings.__len__() > 0 %}
                   <div class="rating">
                     {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
                       <span class="glyphicon glyphicon-star good"></span>

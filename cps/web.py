@@ -1,5 +1,5 @@
 from flask import Flask, render_template, session, request, redirect, url_for, send_from_directory, make_response
-from cps import db
+from cps import db, config
 import os
 from sqlalchemy.sql.expression import func
 
@@ -10,7 +10,7 @@ app = (Flask(__name__))
 
 @app.route("/feed")
 def feed_index():
-    entries = db.session.query(db.Books).limit(50)
+    entries = db.session.query(db.Books).limit(config.NEWEST_BOOKS)
     xml = render_template('feed.xml', entries=entries)
     response= make_response(xml)
     response.headers["Content-Type"] = "application/xml"
@@ -18,19 +18,19 @@ def feed_index():
 
 @app.route("/")
 def index():
-    random = db.session.query(db.Books).order_by(func.random()).limit(6)
-    entries = db.session.query(db.Books).limit(50)
+    random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
+    entries = db.session.query(db.Books).limit(config.NEWEST_BOOKS)
     return render_template('index.html', random=random, entries=entries)
 
 @app.route("/hot")
 def hot_books():
-    random = db.session.query(db.Books).order_by(func.random()).limit(6)
-    entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).limit(50)
+    random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
+    entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).limit(config.NEWEST_BOOKS)
     return render_template('index.html', random=random, entries=entries)
 
 @app.route("/category/<name>")
 def category(name):
-    random = db.session.query(db.Books).order_by(func.random()).limit(6)
+    random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
     if name != "all":
         entries = db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.name.like("%" +name + "%" ))).all()
     else:
@@ -48,7 +48,7 @@ def title_sort(title):
 def search():
     term = request.args.get("term")
     if term:
-        random = db.session.query(db.Books).order_by(func.random()).limit(6)
+        random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%"+term+"%")),db.Books.authors.any(db.Authors.name.like("%"+term+"%")),db.Books.title.like("%"+term+"%"))).all()
         return render_template('search.html', searchterm=term, entries=entries)
     else:
@@ -61,11 +61,11 @@ def author(name):
 
 @app.route("/cover/<path:cover_path>")
 def get_cover(cover_path):
-    return send_from_directory(os.path.join("/Users/workstation/Calibre Library", cover_path), "cover.jpg")
+    return send_from_directory(os.path.join(config.DB_ROOT, cover_path), "cover.jpg")
 
 @app.route("/download/<path:dl_path>/<name>/<format>")
 def get_download_link(dl_path, name, format):
-    response = make_response(send_from_directory(os.path.join("/Users/workstation/Calibre Library", dl_path), name + "." +format))
+    response = make_response(send_from_directory(os.path.join(config.DB_ROOT, dl_path), name + "." +format))
     response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (name, format)
     return response
 

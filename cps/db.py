@@ -3,8 +3,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
 from sqlalchemy_fulltext import FullText, FullTextSearch
 import os
+from cps import config
 
-dbpath = "metadata.db"
+dbpath = os.path.join(config.DB_ROOT, "metadata.db")
 engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
 
 Base = declarative_base()

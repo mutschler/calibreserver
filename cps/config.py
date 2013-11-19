@@ -1,5 +1,5 @@
 import os
-from lib.configobj import ConfigObj
+from configobj import ConfigObj
 
 
 CONFIG_FILE= os.path.join(os.getcwd(), "config.ini")
@@ -42,8 +42,9 @@ def check_setting_int(config, cfg_name, item_name, def_val):
 CheckSection('General')
 DB_ROOT = check_setting_str(CFG, 'General', 'DB_ROOT', os.path.join(os.getcwd(), "Calibre Library"))
 TEMPLATEDIR = check_setting_str(CFG, 'General', 'TEMPLATEDIR', os.path.join(os.getcwd(), "views"))
-PORT = check_setting_str(CFG, 'General', 'PORT', 1337)
-NEWEST_BOOKS = check_setting_str(CFG, 'General', 'NEWEST_BOOKS', 20)
+PORT = check_setting_int(CFG, 'General', 'PORT', 8083)
+NEWEST_BOOKS = check_setting_str(CFG, 'General', 'NEWEST_BOOKS', 60)
+RANDOM_BOOKS = check_setting_int(CFG, 'General', 'RANDOM_BOOKS', 6)
 ALL_BOOKS = check_setting_str(CFG, 'General', 'ALL_BOOKS', 100)
 USER = check_setting_str(CFG, 'General', 'USER', "admin")
 PASS = check_setting_str(CFG, 'General', 'PASS', "calibreserver")

@@ -123,7 +123,7 @@
                   {% endif %}
 
                 {% if entry.series|length > 0 %}
-                  <p>Book {{entry.series_index}} of <a href="{{url_for('series', name=entry.series[0].name)}}">"{{entry.series[0].name}}"</a></p>
+                  <p>Book {{entry.series_index}} of <a href="{{url_for('series', name=entry.series[0].name)}}">{{entry.series[0].name}}</a></p>
                 {% endif %}
 
                 {% if entry.comments|length > 0 %}

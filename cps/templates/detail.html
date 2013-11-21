@@ -67,9 +67,7 @@
               <div class="col-sm-3 col-lg-3 col-xs-6">
                 <div class="cover">
                   {% if entry.has_cover is defined %}
-                    <a href="{{ url_for('get_download_link', dl_path=entry.path, format=entry.data[0].format|lower, name=entry.data[0].name) }}">
-                      <img src="{{ url_for('get_cover', cover_path=entry.path) }}" />
-                    </a>
+                    <img src="{{ url_for('get_cover', cover_path=entry.path) }}" />
                   {% endif %}
                 </div>
               </div>
@@ -103,7 +101,7 @@
                   <p>
                     <span class="glyphicon glyphicon-cloud-download"></span>
                     {% for format in entry.data %}
-                      <a href="{{ url_for('get_download_link', dl_path=entry.path, format=format.format|lower, name=format.name) }}">{{format.format}}</a>,
+                      <a href="{{ url_for('get_download_link', book_id=entry.id, format=format.format|lower) }}">{{format.format}}</a>,
                     {%endfor%}
                   </p>
                   <span class="glyphicon glyphicon-save"></span>

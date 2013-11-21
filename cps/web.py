@@ -172,10 +172,12 @@ def author(name):
 def get_cover(cover_path):
     return send_from_directory(os.path.join(config.DB_ROOT, cover_path), "cover.jpg")
 
-@app.route("/download/<path:dl_path>/<name>/<format>")
-def get_download_link(dl_path, name, format):
-    response = make_response(send_from_directory(os.path.join(config.DB_ROOT, dl_path), name + "." +format))
-    response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (name, format)
+@app.route("/download/<int:book_id>/<format>")
+def get_download_link(book_id, format):
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format.upper()).first()
+    response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." +format))
+    response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (data.name, format)
     return response
 
 @app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])

@@ -123,9 +123,8 @@ def hot_books():
 
 @app.route("/book/<int:id>")
 def show_book(id):
-    random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
     entries = db.session.query(db.Books).filter(db.Books.id == id).first()
-    return render_template('detail.html', random=random, entry=entries,  title=entries.title)
+    return render_template('detail.html', entry=entries,  title=entries.title)
 
 @app.route("/category/<name>")
 def category(name):
@@ -161,8 +160,9 @@ def search():
 
 @app.route("/author/<name>")
 def author(name):
+    random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
     entries = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.name.like("%" +  name + "%"))).all()
-    return render_template('index.html', entries=entries, title="Author: %s" % name)
+    return render_template('index.html', random=random, entries=entries, title="Author: %s" % name)
 
 @app.route("/cover/<path:cover_path>")
 def get_cover(cover_path):

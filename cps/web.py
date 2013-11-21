@@ -136,6 +136,12 @@ def category(name):
         entries = db.session.query(db.Books).all()
     return render_template('index.html', random=random, entries=entries)
 
+@app.route("/series/<name>")
+def series(name):
+    random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
+    entries = db.session.query(db.Books).filter(db.Books.series.any(db.Series.name.like("%" +name + "%" ))).order_by(db.Books.series_index).all()
+    return render_template('index.html', random=random, entries=entries)
+
 @app.route("/admin/")
 def admin():
     return "Admin ONLY!"

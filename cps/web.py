@@ -112,20 +112,20 @@ def index():
     print request.user_agent
     #{'platform': 'linux', 'version': '528.5', 'string': 'Mozilla/5.0 (Linux; U; de-DE) AppleWebKit/528.5+ (KHTML, like Gecko, Safari/528.5+) Version/4.0 Kindle/3.0 (screen 600x800; rotate)', 'language': 'de-DE', 'browser': 'safari'}
     #Mozilla/5.0 (Linux; U; de-DE) AppleWebKit/528.5+ (KHTML, like Gecko, Safari/528.5+) Version/4.0 Kindle/3.0 (screen 600x800; rotate)
-    return render_template('index.html', random=random, entries=entries)
+    return render_template('index.html', random=random, entries=entries, title="Latest Books")
 
 @app.route("/hot")
 def hot_books():
     random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
     entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).limit(config.NEWEST_BOOKS)
-    return render_template('index.html', random=random, entries=entries)
+    return render_template('index.html', random=random, entries=entries, title="Hot Books")
 
 
 @app.route("/book/<int:id>")
 def show_book(id):
     random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
     entries = db.session.query(db.Books).filter(db.Books.id == id).first()
-    return render_template('detail.html', random=random, entry=entries)
+    return render_template('detail.html', random=random, entry=entries,  title=entries.title)
 
 @app.route("/category/<name>")
 def category(name):
@@ -134,13 +134,13 @@ def category(name):
         entries = db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.name.like("%" +name + "%" ))).all()
     else:
         entries = db.session.query(db.Books).all()
-    return render_template('index.html', random=random, entries=entries)
+    return render_template('index.html', random=random, entries=entries, title="Category: %s" % name)
 
 @app.route("/series/<name>")
 def series(name):
     random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
     entries = db.session.query(db.Books).filter(db.Books.series.any(db.Series.name.like("%" +name + "%" ))).order_by(db.Books.series_index).all()
-    return render_template('index.html', random=random, entries=entries)
+    return render_template('index.html', random=random, entries=entries, title="Series: %s" % name)
 
 @app.route("/admin/")
 def admin():
@@ -162,7 +162,7 @@ def search():
 @app.route("/author/<name>")
 def author(name):
     entries = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.name.like("%" +  name + "%"))).all()
-    return render_template('index.html', entries=entries)
+    return render_template('index.html', entries=entries, title="Author: %s" % name)
 
 @app.route("/cover/<path:cover_path>")
 def get_cover(cover_path):

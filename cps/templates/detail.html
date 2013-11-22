@@ -106,6 +106,7 @@
                   </p>
                   <span class="glyphicon glyphicon-save"></span>
                   <span class="glyphicon glyphicon-envelope"></span>
+                  <a href="{{ url_for('edit_book', book_id=entry.id) }}"><span class="glyphicon glyphicon-wrench"></span></a>
                   <p>
                     <span class="glyphicon glyphicon-tags"></span>
                     {% for tag in entry.tags %}

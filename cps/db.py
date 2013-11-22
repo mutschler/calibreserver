@@ -4,10 +4,22 @@ from sqlalchemy.orm import *
 from sqlalchemy_fulltext import FullText, FullTextSearch
 import os
 from cps import config
+import re
+
+#calibre sort stuff
+title_pat = re.compile('^(A|The|An)\s+', re.IGNORECASE)
+def title_sort(title):
+    match = title_pat.search(title)
+    if match:
+        prep = match.group(1)
+        title = title.replace(prep, '') + ', ' + prep
+    return title.strip()
+
 
 dbpath = os.path.join(config.DB_ROOT, "metadata.db")
 engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
-
+conn = engine.connect()
+conn.connection.create_function('title_sort', 1, title_sort)
 Base = declarative_base()
 
 books_authors_link = Table('books_authors_link', Base.metadata,

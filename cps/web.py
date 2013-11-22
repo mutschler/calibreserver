@@ -187,14 +187,23 @@ def get_download_link(book_id, format):
 
 @app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
 def edit_book(book_id):
+    ## create the function for sorting...
+    db.session.connection().connection.connection.create_function("title_sort",1,db.title_sort)
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     if request.method == 'POST':
-
         to_save = request.form.to_dict()
         print to_save
         #print title_sort(to_save["book_title"])
         book.title = to_save["book_title"]
-        book.comments[0].text = to_save["description"]
+        book.authors[0].name = to_save["author_name"]
+
+        if book.series_index != to_save["series_index"]:
+            book.series_index = to_save["series_index"]
+        if len(book.comments):
+            book.comments[0].text = to_save["description"]
+        else:
+            book.comments.append(db.Comments(text=to_save["description"], book=book.id))
+
         for tag in to_save["tags"].split(","):
             if tag.strip():
                 print tag
@@ -219,8 +228,17 @@ def edit_book(book_id):
                 new_rating = db.Ratings(rating=int(to_save["rating"].strip()))
                 book.ratings[0] = new_rating
         db.session.commit()
-        return render_template('edit_book.html', book=book)
+        if to_save["detail_view"]:
+            return redirect(url_for('show_book', id=book.id))
+        else:
+            return render_template('edit_book.html', book=book)
     else:
         return render_template('edit_book.html', book=book)
 
-
+# @app.route('/admin/delete/<int:book_id>')
+# def delete_book(book_id):
+#     to_delete = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+#     print to_delete
+#     db.session.delete(to_delete)
+#     db.session.commit()
+#     return redirect(url_for('index'))

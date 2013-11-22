@@ -49,6 +49,7 @@ ALL_BOOKS = check_setting_str(CFG, 'General', 'ALL_BOOKS', 100)
 USER = check_setting_str(CFG, 'General', 'USER', "admin")
 PASS = check_setting_str(CFG, 'General', 'PASS', "calibreserver")
 WEB_ADMIN = bool(check_setting_int(CFG, 'General', 'WEB_ADMIN', 1))
+DEVELOPMENT = bool(check_setting_int(CFG, 'General', 'DEVELOPMENT', 0))
 
 SYS_ENCODING="UTF-8"
 
@@ -61,6 +62,7 @@ configval["ALL_BOOKS"] = ALL_BOOKS
 configval["USER"] = USER
 configval["PASS"] = PASS
 configval["WEB_ADMIN"] = WEB_ADMIN
+configval["DEVELOPMENT"] = DEVELOPMENT
 
 def save_config(configval):
     new_config = ConfigObj()
@@ -74,6 +76,7 @@ def save_config(configval):
     new_config['General']['USER'] = configval["USER"]
     new_config['General']['PASS'] = configval["PASS"]
     new_config['General']['WEB_ADMIN'] = int(configval["WEB_ADMIN"])
+    new_config['General']['DEVELOPMENT'] = int(configval["DEVELOPMENT"])
     new_config.write()
     return "Saved"
 

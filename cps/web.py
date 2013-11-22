@@ -117,7 +117,7 @@ def index():
 @app.route("/hot")
 def hot_books():
     random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
-    entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).limit(config.NEWEST_BOOKS)
+    entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).order_by(db.Books.last_modified.desc()).limit(config.NEWEST_BOOKS)
     return render_template('index.html', random=random, entries=entries, title="Hot Books")
 
 @app.route("/discover")
@@ -134,7 +134,7 @@ def show_book(id):
 def category(name):
     random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
     if name != "all":
-        entries = db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.name.like("%" +name + "%" ))).all()
+        entries = db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.name.like("%" +name + "%" ))).order_by(db.Books.last_modified.desc()).all()
     else:
         entries = db.session.query(db.Books).all()
     return render_template('index.html', random=random, entries=entries, title="Category: %s" % name)

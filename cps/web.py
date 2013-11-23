@@ -90,6 +90,19 @@ def feed_new():
     return response
 
 
+@app.route("/feed/discover")
+def feed_discover():
+    off = request.args.get("start_index")
+    if off:
+        entries = db.session.query(db.Books).order_by(func.random()).offset(off).limit(config.NEWEST_BOOKS)
+    else:
+        entries = db.session.query(db.Books).order_by(func.random()).limit(config.NEWEST_BOOKS)
+        off = 0
+    xml = render_template('feed.xml', entries=entries, next_url="/feed/discover?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+    response= make_response(xml)
+    response.headers["Content-Type"] = "application/xml"
+    return response
+
 @app.route("/feed/hot")
 def feed_hot():
     off = request.args.get("start_index")

@@ -56,7 +56,8 @@ MAIL_LOGIN = check_setting_str(check_setting_int(CFG, 'General', 'MAIL_LOGIN', "
 MAIL_PASSWORD = check_setting_str(check_setting_int(CFG, 'General', 'MAIL_PASSWORD', "mypassword"))
 MAIL_PORT = bool(check_setting_int(CFG, 'General', 'MAIL_PORT', 25))
 MAIL_FROM = check_setting_str(check_setting_int(CFG, 'General', 'MAIL_FROM', "library automailer <mail@example.com>"))
-
+CheckSection('Advanced')
+TITLE_REGEX = check_setting_str(CFG, 'Advanced', 'TITLE_REGEX', '^(Der|Die|Das|Ein|Eine)\s+')
 
 SYS_ENCODING="UTF-8"
 
@@ -76,8 +77,7 @@ configval["MAIL_FROM"] = MAIL_FROM
 configval["MAIL_PORT"] = MAIL_PORT
 configval["MAIL_LOGIN"] = MAIL_LOGIN
 configval["MAIL_PASSWORD"] = MAIL_PASSWORD
-
-
+configval["TITLE_REGEX"] = TITLE_REGEX
 
 
 def save_config(configval):
@@ -99,6 +99,7 @@ def save_config(configval):
     new_config['General']['MAIL_FROM'] = configval["MAIL_FROM"]
     new_config['General']['MAIL_LOGIN'] = configval["MAIL_LOGIN"]
     new_config['General']['MAIL_PASSWORD'] = configval["MAIL_PASSWORD"]
+    new_config['Advanced']['TITLE_REGEX'] = configval["TITLE_REGEX"]
     new_config.write()
     return "Saved"
 

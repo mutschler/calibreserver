@@ -7,7 +7,7 @@ from cps import config
 import re
 
 #calibre sort stuff
-title_pat = re.compile('^(Der|Die|Das|Ein|Eine)\s+', re.IGNORECASE)
+title_pat = re.compile(config.TITLE_REGEX, re.IGNORECASE)
 def title_sort(title):
     match = title_pat.search(title)
     if match:

@@ -40,6 +40,7 @@ def check_setting_int(config, cfg_name, item_name, def_val):
     return my_val
 
 CheckSection('General')
+CheckSection('Advanced')
 DB_ROOT = check_setting_str(CFG, 'General', 'DB_ROOT', os.path.join(os.getcwd(), "Calibre Library"))
 TEMPLATEDIR = check_setting_str(CFG, 'General', 'TEMPLATEDIR', os.path.join(os.getcwd(), "views"))
 MAIN_DIR = check_setting_str(CFG, 'General', 'MAIN_DIR', os.getcwd())
@@ -51,12 +52,11 @@ USER = check_setting_str(CFG, 'General', 'USER', "admin")
 PASS = check_setting_str(CFG, 'General', 'PASS', "calibreserver")
 WEB_ADMIN = bool(check_setting_int(CFG, 'General', 'WEB_ADMIN', 1))
 DEVELOPMENT = bool(check_setting_int(CFG, 'General', 'DEVELOPMENT', 1))
-MAIL_SERVER = check_setting_str(check_setting_int(CFG, 'General', 'MAIL_SERVER', "mail.example.com"))
-MAIL_LOGIN = check_setting_str(check_setting_int(CFG, 'General', 'MAIL_LOGIN', "mail@example.com"))
-MAIL_PASSWORD = check_setting_str(check_setting_int(CFG, 'General', 'MAIL_PASSWORD', "mypassword"))
+MAIL_SERVER = check_setting_str(CFG, 'General', 'MAIL_SERVER', 'mail.example.com')
+MAIL_LOGIN = check_setting_str(CFG, 'General', 'MAIL_LOGIN', "mail@example.com")
+MAIL_PASSWORD = check_setting_str(CFG, 'General', 'MAIL_PASSWORD', "mypassword")
 MAIL_PORT = bool(check_setting_int(CFG, 'General', 'MAIL_PORT', 25))
-MAIL_FROM = check_setting_str(check_setting_int(CFG, 'General', 'MAIL_FROM', "library automailer <mail@example.com>"))
-CheckSection('Advanced')
+MAIL_FROM = check_setting_str(CFG, 'General', 'MAIL_FROM', "library automailer <mail@example.com>")
 TITLE_REGEX = check_setting_str(CFG, 'Advanced', 'TITLE_REGEX', '^(Der|Die|Das|Ein|Eine)\s+')
 
 SYS_ENCODING="UTF-8"
@@ -99,6 +99,7 @@ def save_config(configval):
     new_config['General']['MAIL_FROM'] = configval["MAIL_FROM"]
     new_config['General']['MAIL_LOGIN'] = configval["MAIL_LOGIN"]
     new_config['General']['MAIL_PASSWORD'] = configval["MAIL_PASSWORD"]
+    new_config['Advanced'] = {}
     new_config['Advanced']['TITLE_REGEX'] = configval["TITLE_REGEX"]
     new_config.write()
     return "Saved"

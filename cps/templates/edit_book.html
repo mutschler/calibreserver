@@ -19,8 +19,8 @@
       {% if book %}
         <form role="form" action="{{ url_for('edit_book', book_id=book.id) }}" method="post">
           <div class="form-group">
-            <label for="bookName">Book Title</label>
-            <input type="text" class="form-control" name="book_title" id="bookName" value="{{book.title}}">
+            <label for="book_title">Book Title</label>
+            <input type="text" class="form-control" name="book_title" id="book_title" value="{{book.title}}">
           </div>
           <div class="form-group">
             <label for="bookAuthor">Author</label>
@@ -32,29 +32,29 @@
             <input type="text" class="form-control" name="author_name" id="bookAuthor" value="{{book.authors[0].name}}">
           </div>
           <div class="form-group">
-            <label for="bookAuthor">Description</label>
-            <textarea class="form-control" name="description" rows="7">{% if book.comments %}{{book.comments[0].text}}{%endif%}</textarea>
+            <label for="description">Description</label>
+            <textarea class="form-control" name="description" id="description" rows="7">{% if book.comments %}{{book.comments[0].text}}{%endif%}</textarea>
           </div>
           <div class="form-group">
-            <label for="bookAuthor">Tags</label>
-            <input type="text" class="form-control" name="tags" id="bookAuthor" value="{% for tag in book.tags %}{{tag.name.strip()}}, {% endfor %}">
+            <label for="tags">Tags</label>
+            <input type="text" class="form-control" name="tags" id="tags" value="{% for tag in book.tags %}{{tag.name.strip()}}, {% endfor %}">
           </div>
 
             <div class="form-group">
-              <label for="bookAuthor">Series</label>
-              <input type="text" class="form-control" name="series" value="{% if book.series %}{{book.series[0].name}}{% endif %}">
+              <label for="series">Series</label>
+              <input type="text" class="form-control" name="series" id="series" value="{% if book.series %}{{book.series[0].name}}{% endif %}">
             </div>
             <div class="form-group">
-              <label for="bookAuthor">Series id</label>
-              <input type="text" class="form-control" name="series_index" value="{{book.series_index}}">
+              <label for="series_index">Series id</label>
+              <input type="text" class="form-control" name="series_index" id="series_index" value="{{book.series_index}}">
             </div>
             <div class="form-group">
-              <label for="bookAuthor">Rating</label>
-              <input type="text" class="form-control" name="rating" value="{% if book.ratings %}{{book.ratings[0].rating}}{% endif %}">
+              <label for="rating">Rating</label>
+              <input type="text" class="form-control" name="rating" id="rating" value="{% if book.ratings %}{{book.ratings[0].rating}}{% endif %}">
             </div>
             <div class="form-group">
-              <label for="bookAuthor">Cover URL (jpg)</label>
-              <input type="text" class="form-control" name="cover_url" value="">
+              <label for="cover_url">Cover URL (jpg)</label>
+              <input type="text" class="form-control" name="cover_url" id="cover_url" value="">
             </div>
           <div class="checkbox">
             <label>

@@ -3,8 +3,15 @@ from cps import db, config
 import os
 from sqlalchemy.sql.expression import func
 from math import ceil
+from flask.ext.login import LoginManager, login_user, logout_user, login_required, current_user
+from flask.ext.principal import Principal, Identity, AnonymousIdentity, identity_changed
+import requests
 
 app = (Flask(__name__))
+
+Principal(app)
+
+login_manager = LoginManager(app)
 
 
 #simple pagination for the feed
@@ -163,12 +170,11 @@ def series(name):
     entries = db.session.query(db.Books).filter(db.Books.series.any(db.Series.name.like("%" +name + "%" ))).order_by(db.Books.series_index).all()
     return render_template('index.html', random=random, entries=entries, title="Series: %s" % name)
 
+
 @app.route("/admin/")
 def admin():
     return "Admin ONLY!"
 
-def title_sort(title):
-    return title
 
 @app.route("/search", methods=["GET"])
 def search():
@@ -209,6 +215,12 @@ def edit_book(book_id):
         #print title_sort(to_save["book_title"])
         book.title = to_save["book_title"]
         book.authors[0].name = to_save["author_name"]
+
+        if to_save["cover_url"] and os.path.splitext(to_save["cover_url"])[1].lower() == ".jpg":
+            img = requests.get(to_save["cover_url"])
+            f = open(os.path.join(config.DB_ROOT, book.path, "cover.jpg"), "wb")
+            f.write(img.content)
+            f.close()
 
         if book.series_index != to_save["series_index"]:
             book.series_index = to_save["series_index"]

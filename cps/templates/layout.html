@@ -71,7 +71,7 @@
               <li><a href="{{url_for('hot_books')}}"><span class="glyphicon glyphicon-fire"></span> Hot Books</a></li>
               <li><a href="{{url_for('index')}}"><span class="glyphicon glyphicon-book"></span> New Books</a></li>
               <li><a href="{{url_for('discover')}}"><span class="glyphicon glyphicon-random"></span> Discover</a></li>
-              <li><a href="{{url_for('category', name='Fantasy')}}"><span class="glyphicon glyphicon-inbox"></span> Categroies</a></li>
+              <li><a href="{{url_for('category_list')}}"><span class="glyphicon glyphicon-inbox"></span> Categories</a></li>
 
               {% if g.user.is_authenticated() %}
                 <li class="nav-head">Shelves</li>

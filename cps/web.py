@@ -250,6 +250,59 @@ def logout():
         logout_user()
     return redirect(request.args.get("next") or url_for("index"))
 
+
+@app.route("/me", methods = ["GET", "POST"])
+@login_required
+def profile():
+    content = ub.session.query(ub.User).filter(ub.User.id == int(current_user.id)).first()
+    if request.method == "POST":
+        to_save = request.form.to_dict()
+        print to_save
+        if to_save["password"]:
+            content.password = generate_password_hash(to_save["password"])
+        if to_save["kindle_mail"] and to_save["kindle_mail"] != content.kindle_mail:
+            content.kindle_mail = to_save["kindle_mail"]
+        if to_save["user_role"]:
+            content.role = int(to_save["user_role"])
+        ub.session.commit()
+    return render_template("user_edit.html", content=content, title="%s's profile" % current_user.nickname)
+
+@app.route("/admin/user")
+@login_required
+def user_list():
+    content = ub.session.query(ub.User).all()
+    return render_template("user_list.html", content=content, title="User list")
+
+@app.route("/admin/user/new", methods = ["GET", "POST"])
+@login_required
+def new_user():
+    content = ub.User()
+    if request.method == "POST":
+        to_save = request.form.to_dict()
+        content.password = generate_password_hash(to_save["password"])
+        content.nickname = to_save["nickname"]
+        content.email = to_save["email"]
+        content.role = int(to_save["user_role"])
+        try:
+            ub.session.add(content)
+            ub.session.commit()
+            flash("User created", category="success")
+        except (e):
+            flash(e, category="error")
+    return render_template("user_edit.html", content=content, title="User list")
+
+@app.route("/admin/user/<int:user_id>", methods = ["GET", "POST"])
+@login_required
+def edit_user(user_id):
+    content = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
+    if request.method == "POST":
+        to_save = request.form.to_dict()
+        if to_save["delete"]:
+            ub.session.delete(content)
+            ub.session.commit()
+            return redirect(url_for('user_list'))
+    return render_template("user_edit.html", content=content, title="Edit User")
+
 @app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
 @login_required
 def edit_book(book_id):

@@ -40,7 +40,11 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             {% if g.user.is_authenticated() %}
-              <li><a href="{{url_for('logout', next=request.path)}}">Logout ({{g.user.nickname}})</a></li>
+              {% if g.user.role %}
+                <li><a href="{{url_for('user_list')}}">Admin</a></li>
+              {% endif %}
+              <li><a href="{{url_for('profile')}}">{{g.user.nickname}}</a></li>
+              <li><a href="{{url_for('logout', next=request.path)}}">Logout</a></li>
             {% else %}
               <li><a href="{{url_for('login', next=request.path)}}">Login</a></li>
             {% endif %}

@@ -1,5 +1,5 @@
-from flask import Flask, render_template, session, request, redirect, url_for, send_from_directory, make_response
-from cps import db, config
+from flask import Flask, render_template, session, request, redirect, url_for, send_from_directory, make_response, g
+from cps import db, config, ub
 import os
 from sqlalchemy.sql.expression import func
 from math import ceil
@@ -11,8 +11,15 @@ app = (Flask(__name__))
 
 Principal(app)
 
-login_manager = LoginManager(app)
+lm = LoginManager(app)
+lm.init_app(app)
+lm.login_view = 'login'
 
+app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+
+@lm.user_loader
+def load_user(id):
+    return ub.session.query(ub.User).filter(ub.User.id == int(id)).first()
 
 #simple pagination for the feed
 class Pagination(object):
@@ -55,6 +62,9 @@ def url_for_other_page(page):
 
 app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 
+@app.before_request
+def before_request():
+    g.user = current_user
 
 @app.route("/feed")
 def feed_index():
@@ -204,7 +214,27 @@ def get_download_link(book_id, format):
     response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (data.name, format)
     return response
 
+@app.route('/login', methods = ['GET', 'POST'])
+def login():
+    if current_user is not None and current_user.is_authenticated():
+        return redirect(url_for('index'))
+
+    if request.method == "POST":
+        form = request.form.to_dict()
+        user = ub.session.query(ub.User).filter(ub.User.nickname == form['username']).first()
+        login_user(user, remember = True)
+
+        return redirect(request.args.get("next") or url_for("index"))
+    return render_template('login.html', title="login")
+
+@app.route('/logout')
+def logout():
+    if current_user is not None and current_user.is_authenticated():
+        logout_user()
+    return redirect(url_for('index'))
+
 @app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
+@login_required
 def edit_book(book_id):
     ## create the function for sorting...
     db.session.connection().connection.connection.create_function("title_sort",1,db.title_sort)

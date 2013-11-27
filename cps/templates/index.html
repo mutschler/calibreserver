@@ -39,7 +39,11 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="">Login</a></li>
+            {% if g.user.is_authenticated() %}
+              <li><a href="{{url_for('logout')}}">Logout</a></li>
+            {% else %}
+              <li><a href="{{url_for('login')}}">Login</a></li>
+            {% endif %}
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -55,9 +59,14 @@
               <li><a href="{{url_for('index')}}"><span class="glyphicon glyphicon-book"></span> New Books</a></li>
               <li><a href="{{url_for('discover')}}"><span class="glyphicon glyphicon-random"></span> Discover</a></li>
               <li><a href="{{url_for('category', name='Fantasy')}}"><span class="glyphicon glyphicon-inbox"></span> Categroies</a></li>
-              <!-- <li class="nav-head">Shelves</li>
-              <li><a href="#"><span class="glyphicon glyphicon-list"></span> My Shelves</a></li>
-              <li class="create-shelf"><a href="#">Create a Shelf</a></li> -->
+
+              {% if g.user.is_authenticated() %}
+                <li class="nav-head">Shelves</li>
+                {% for shelf in g.user.shelf %}
+                  <li><a href="#"><span class="glyphicon glyphicon-list"></span> {{shelf.name}}</a></li>
+                {% endfor %}
+                <li class="create-shelf"><a href="#">Create a Shelf</a></li>
+              {% endif %}
             </ul>
           </nav>
         </div>

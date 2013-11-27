@@ -72,6 +72,7 @@
               <li><a href="{{url_for('index')}}"><span class="glyphicon glyphicon-book"></span> New Books</a></li>
               <li><a href="{{url_for('discover')}}"><span class="glyphicon glyphicon-random"></span> Discover</a></li>
               <li><a href="{{url_for('category_list')}}"><span class="glyphicon glyphicon-inbox"></span> Categories</a></li>
+              <li><a href="{{url_for('author_list')}}"><span class="glyphicon glyphicon-user"></span> Authors</a></li>
 
               {% if g.user.is_authenticated() %}
                 <li class="nav-head">Shelves</li>

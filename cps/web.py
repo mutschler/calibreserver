@@ -248,7 +248,7 @@ def login():
 def logout():
     if current_user is not None and current_user.is_authenticated():
         logout_user()
-    return redirect(url_for('index'))
+    return redirect(request.args.get("next") or url_for("index"))
 
 @app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
 @login_required

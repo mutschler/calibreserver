@@ -166,6 +166,11 @@ def show_book(id):
     entries = db.session.query(db.Books).filter(db.Books.id == id).first()
     return render_template('detail.html', entry=entries,  title=entries.title)
 
+@app.route("/category")
+def category_list():
+    entries = db.session.query(db.Tags).order_by(db.Tags.name).all()
+    return render_template('categories.html', entries=entries, title="Category list")
+
 @app.route("/category/<name>")
 def category(name):
     random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
@@ -196,6 +201,11 @@ def search():
         return render_template('search.html', searchterm=term, entries=entries)
     else:
         return render_template('search.html', searchterm="")
+
+@app.route("/author")
+def author_list():
+    entries = db.session.query(db.Authors).order_by(db.Authors.sort).all()
+    return render_template('authors.html', entries=entries, title="Author list")
 
 @app.route("/author/<name>")
 def author(name):

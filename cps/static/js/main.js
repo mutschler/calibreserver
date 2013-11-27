@@ -1,7 +1,7 @@
 
 
 $(function() {
-    $('.row').isotope({
+    $('.discover.row').isotope({
         // options
         itemSelector : '.book',
         layoutMode : 'fitRows'

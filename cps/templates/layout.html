@@ -40,9 +40,9 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             {% if g.user.is_authenticated() %}
-              <li><a href="{{url_for('logout')}}">Logout ({{g.user.nickname}})</a></li>
+              <li><a href="{{url_for('logout', next=request.path)}}">Logout ({{g.user.nickname}})</a></li>
             {% else %}
-              <li><a href="{{url_for('login')}}">Login</a></li>
+              <li><a href="{{url_for('login', next=request.path)}}">Login</a></li>
             {% endif %}
           </ul>
         </div><!--/.nav-collapse -->

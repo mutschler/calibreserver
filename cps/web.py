@@ -6,6 +6,7 @@ from math import ceil
 from flask.ext.login import LoginManager, login_user, logout_user, login_required, current_user
 from flask.ext.principal import Principal, Identity, AnonymousIdentity, identity_changed
 import requests
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = (Flask(__name__))
 
@@ -216,16 +217,20 @@ def get_download_link(book_id, format):
 
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
+    error = None
     if current_user is not None and current_user.is_authenticated():
         return redirect(url_for('index'))
 
     if request.method == "POST":
         form = request.form.to_dict()
         user = ub.session.query(ub.User).filter(ub.User.nickname == form['username']).first()
-        login_user(user, remember = True)
+        if check_password_hash(user.password, form['password']):
+            login_user(user, remember = True)
+            return redirect(request.args.get("next") or url_for("index"))
+        else:
+            error = "Wrong Password"
 
-        return redirect(request.args.get("next") or url_for("index"))
-    return render_template('login.html', title="login")
+    return render_template('login.html', title="login", error=error)
 
 @app.route('/logout')
 def logout():

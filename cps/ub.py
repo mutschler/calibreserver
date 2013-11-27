@@ -18,7 +18,8 @@ class User(Base):
 	nickname = Column(String(64), unique = True)
 	email = Column(String(120), unique = True)
 	role = Column(SmallInteger, default = ROLE_USER)
-	# password = Column(String)
+	password = Column(String)
+	kindle_mail = Column(String(120), default="")
 	shelf = relationship('Shelf', backref = 'user', lazy = 'dynamic')
 	whislist = relationship('Whislist', backref = 'user', lazy = 'dynamic')
 

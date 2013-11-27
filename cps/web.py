@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, request, redirect, url_for, send_from_directory, make_response, g
+from flask import Flask, render_template, session, request, redirect, url_for, send_from_directory, make_response, g, flash
 from cps import db, config, ub
 import os
 from sqlalchemy.sql.expression import func
@@ -224,13 +224,15 @@ def login():
     if request.method == "POST":
         form = request.form.to_dict()
         user = ub.session.query(ub.User).filter(ub.User.nickname == form['username']).first()
-        if check_password_hash(user.password, form['password']):
+
+        if user and check_password_hash(user.password, form['password']):
             login_user(user, remember = True)
+            flash("you are now logged in as: '%s'" % user.nickname, category="success")
             return redirect(request.args.get("next") or url_for("index"))
         else:
-            error = "Wrong Password"
+            flash("Wrong Username or Password", category="error")
 
-    return render_template('login.html', title="login", error=error)
+    return render_template('login.html', title="login")
 
 @app.route('/logout')
 def logout():

@@ -68,6 +68,7 @@ app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 @app.before_request
 def before_request():
     g.user = current_user
+    g.public_shelfes = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1).all()
 
 @app.route("/feed")
 def feed_index():
@@ -277,6 +278,60 @@ def logout():
     return redirect(request.args.get("next") or url_for("index"))
 
 
+@app.route("/shelf/add/<int:shelf_id>/<int:book_id>")
+@login_required
+def add_to_shelf(shelf_id, book_id):
+    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
+    if not shelf.is_public and not shelf.user_id == int(current_user.id):
+        flash("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
+        return redirect(url_for('index'))
+    # print shelf.is_public
+    # print shelf.user_id == int(current_user.id)
+    # print shelf.user_id != int(current_user.id) or not shelf.is_public
+
+    ins = ub.BookShelf(shelf=shelf.id, book_id=book_id)
+    ub.session.add(ins)
+    ub.session.commit()
+
+    print request.__dict__
+    return redirect(request.environ["HTTP_REFERER"])
+
+@app.route("/shelf/create", methods=["GET", "POST"])
+@login_required
+def create_shelf():
+    shelf = ub.Shelf()
+    if request.method == "POST":
+        to_save = request.form.to_dict()
+        print to_save
+        if to_save["is_public"]:
+            print "YEAH"
+            shelf.is_public = 1
+        shelf.name = to_save["title"]
+        shelf.user_id = int(current_user.id)
+        try:
+            ub.session.add(shelf)
+            ub.session.commit()
+            flash("Shelf %s created" % to_save["title"], category="success")
+        except:
+            flash("there was an error", category="error")
+        return render_template('shelf_edit.html', title="create a shelf")
+    else:
+        return render_template('shelf_edit.html', title="create a shelf")
+
+
+@app.route("/shelf/<int:shelf_id>")
+@login_required
+def show_shelf(shelf_id):
+    shelf = ub.session.query(ub.Shelf).filter(ub.or_(ub.and_(ub.Shelf.user_id == int(current_user.id), ub.Shelf.id == shelf_id), ub.and_(ub.Shelf.is_public == 1, ub.Shelf.id == shelf_id))).first()
+    result = list()
+    if shelf:
+        books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).all()
+        for book in books_in_shelf:
+            cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
+            result.append(cur_book)
+
+    return render_template('shelf.html', entries=result, title="Shelf: '%s'" % shelf.name)
+
 @app.route("/me", methods = ["GET", "POST"])
 @login_required
 def profile():
@@ -323,10 +378,13 @@ def edit_user(user_id):
     content = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
     if request.method == "POST":
         to_save = request.form.to_dict()
-        if to_save["delete"]:
+        if "delete" in to_save:
             ub.session.delete(content)
-            ub.session.commit()
             return redirect(url_for('user_list'))
+        else:
+            if "password" in to_save:
+                content.password == generate_password_hash(to_save["password"])
+        ub.session.commit()
     return render_template("user_edit.html", content=content, title="Edit User")
 
 @app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])

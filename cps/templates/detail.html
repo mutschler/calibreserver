@@ -40,6 +40,15 @@
         {% endif %}
 
         {% if g.user.is_authenticated() %}
+        <li>Add to Shelf:
+          {% for shelf in g.user.shelf %}
+            <a href="{{ url_for('add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}">{{shelf.name}}</a>,
+          {%endfor%}
+          {% for shelf in g.public_shelfes %}
+            <a href="{{ url_for('add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}">{{shelf.name}}</a>,
+          {%endfor%}
+        </li>
+
         <li>
           <span class="glyphicon glyphicon-cloud-download"></span>
           {% for format in entry.data %}

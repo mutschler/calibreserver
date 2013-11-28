@@ -86,11 +86,15 @@
               <li><a href="{{url_for('author_list')}}"><span class="glyphicon glyphicon-user"></span> Authors</a></li>
 
               {% if g.user.is_authenticated() %}
-                <li class="nav-head">Shelves</li>
-                {% for shelf in g.user.shelf %}
-                  <li><a href="#"><span class="glyphicon glyphicon-list"></span> {{shelf.name}}</a></li>
+                <li class="nav-head">Public Shelves</li>
+                {% for shelf in g.public_shelfes %}
+                  <li><a href="{{url_for('show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list"></span> {{shelf.name}}</a></li>
                 {% endfor %}
-                <li class="create-shelf"><a href="#">Create a Shelf</a></li>
+                <li class="nav-head">Your Shelves</li>
+                {% for shelf in g.user.shelf %}
+                  <li><a href="{{url_for('show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list"></span> {{shelf.name}}</a></li>
+                {% endfor %}
+                <li class="create-shelf"><a href="{{url_for('create_shelf')}}">Create a Shelf</a></li>
               {% endif %}
             </ul>
           </nav>

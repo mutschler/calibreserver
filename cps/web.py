@@ -302,9 +302,7 @@ def create_shelf():
     shelf = ub.Shelf()
     if request.method == "POST":
         to_save = request.form.to_dict()
-        print to_save
-        if to_save["is_public"]:
-            print "YEAH"
+        if "is_public" in to_save:
             shelf.is_public = 1
         shelf.name = to_save["title"]
         shelf.user_id = int(current_user.id)

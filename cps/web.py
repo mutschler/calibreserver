@@ -285,15 +285,11 @@ def add_to_shelf(shelf_id, book_id):
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
         flash("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
         return redirect(url_for('index'))
-    # print shelf.is_public
-    # print shelf.user_id == int(current_user.id)
-    # print shelf.user_id != int(current_user.id) or not shelf.is_public
 
     ins = ub.BookShelf(shelf=shelf.id, book_id=book_id)
     ub.session.add(ins)
     ub.session.commit()
 
-    print request.__dict__
     return redirect(request.environ["HTTP_REFERER"])
 
 @app.route("/shelf/create", methods=["GET", "POST"])

@@ -36,7 +36,7 @@
 
       <ul class="list-unstyled more-stuff">
         {% if g.user.is_authenticated() and g.user.kindle_mail %}
-          <li><a href="#"><div class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Send ebook to kindle: {{g.user.kindle_mail}}</div></a></li>
+          <li><a href="{{url_for('send_to_kindle', book_id=entry.id)}}"><div class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Send ebook to kindle: {{g.user.kindle_mail}}</div></a></li>
         {% endif %}
 
         {% if g.user.is_authenticated() %}

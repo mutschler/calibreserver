@@ -1,7 +1,7 @@
 import mimetypes
 mimetypes.add_type('application/xhtml+xml','.xhtml')
 from flask import Flask, render_template, session, request, redirect, url_for, send_from_directory, make_response, g, flash
-from cps import db, config, ub
+from cps import db, config, ub, helper
 import os
 from sqlalchemy.sql.expression import func
 from math import ceil
@@ -272,11 +272,25 @@ def login():
     return render_template('login.html', title="login")
 
 @app.route('/logout')
+@login_required
 def logout():
     if current_user is not None and current_user.is_authenticated():
         logout_user()
     return redirect(request.args.get("next") or url_for("index"))
 
+
+@app.route('/send/<int:book_id>')
+@login_required
+def send_to_kindle(book_id):
+    if current_user.kindle_mail:
+        x = helper.send_mail(book_id, current_user.kindle_mail)
+        if x:
+            flash("mail successfully send to %s" % current_user.kindle_mail, category="success")
+        else:
+            flash("there was an error sending this book", category="error")
+    else:
+        flash("please set a kindle mail first...", category="error")
+    return redirect(request.environ["HTTP_REFERER"])
 
 @app.route("/shelf/add/<int:shelf_id>/<int:book_id>")
 @login_required

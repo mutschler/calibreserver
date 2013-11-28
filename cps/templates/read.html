@@ -13,12 +13,20 @@
         <script src="{{ url_for('static', filename='js/zip.min.js') }}"></script>
         <script src="{{ url_for('static', filename='js/inflate.js') }}"></script>
         <script src="{{ url_for('static', filename='js/epub.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='css/style.css') }}"></script>
 
         <style type="text/css">
 
           body {
             overflow: hidden;
           }
+          body{background:#f2f2f2}
+          h1, h1 span{font-weight:normal;color:#444 !important}
+
+          .t{
+            color: #444 !important;
+          }
+
 
           #main {
             position: absolute;
@@ -89,6 +97,7 @@
 <script src="{{ url_for('static', filename='js/epub.min.js') }}"></script> -->
 <script>
     Book.renderTo("area");
+    Book.setStyle("padding", "0 40px");
     // EPUBJS.filePath = "{{ url_for('static', filename='js/') }}";
     // var Book = ePub("{{ url_for('get_download_link', book_id=bookid, format='epub') }}.epub", { restore: true });
     // Book.renderTo("area").then(function(){

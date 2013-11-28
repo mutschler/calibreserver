@@ -55,7 +55,7 @@ DEVELOPMENT = bool(check_setting_int(CFG, 'General', 'DEVELOPMENT', 1))
 MAIL_SERVER = check_setting_str(CFG, 'General', 'MAIL_SERVER', 'mail.example.com')
 MAIL_LOGIN = check_setting_str(CFG, 'General', 'MAIL_LOGIN', "mail@example.com")
 MAIL_PASSWORD = check_setting_str(CFG, 'General', 'MAIL_PASSWORD', "mypassword")
-MAIL_PORT = bool(check_setting_int(CFG, 'General', 'MAIL_PORT', 25))
+MAIL_PORT = check_setting_int(CFG, 'General', 'MAIL_PORT', 25)
 MAIL_FROM = check_setting_str(CFG, 'General', 'MAIL_FROM', "library automailer <mail@example.com>")
 TITLE_REGEX = check_setting_str(CFG, 'Advanced', 'TITLE_REGEX', '^(Der|Die|Das|Ein|Eine)\s+')
 

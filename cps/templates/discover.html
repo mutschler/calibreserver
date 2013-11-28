@@ -1,113 +1,37 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>library | {{title}}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
-    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
+{% extends "layout.html" %}
+{% block body %}
+<div class="discover load-more">
+  <h2>{{title}}</h2>
+  <div class="row">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <!-- Static navbar -->
-    <div class="navbar navbar-default navbar-static-top" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="{{url_for('index')}}">library</a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav ">
-            <li>
-              <form class="navbar-form navbar-left" role="search" action="/search" method="GET">
-                <div class="form-group">
-                  <input type="text" class="form-control" name="query" placeholder="Search">
-                </div>
-                <button type="submit" class="btn btn-default">Submit</button>
-              </form>
-            </li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            {% if g.user.is_authenticated() %}
-              <li><a href="{{url_for('logout')}}">Logout</a></li>
-            {% else %}
-              <li><a href="{{url_for('login')}}">Login</a></li>
-            {% endif %}
-          </ul>
-        </div><!--/.nav-collapse -->
+    {% for entry in entries %}
+    <div class="col-sm-3 col-lg-2 col-xs-6 book">
+      <div class="cover">
+        {% if entry.has_cover is defined %}
+          <a href="{{ url_for('show_book', id=entry.id) }}">
+            <img src="{{ url_for('get_cover', cover_path=entry.path) }}" />
+          </a>
+        {% endif %}
       </div>
-    </div>
-
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="col-sm-2">
-          <nav class="navigation">
-            <ul class="list-unstyled">
-              <li class="nav-head">Browse</li>
-              <li><a href="{{url_for('hot_books')}}"><span class="glyphicon glyphicon-fire"></span> Hot Books</a></li>
-              <li><a href="{{url_for('index')}}"><span class="glyphicon glyphicon-book"></span> New Books</a></li>
-              <li class="active"><a href="{{url_for('discover')}}"><span class="glyphicon glyphicon-random"></span> Discover</a></li>
-              <li><a href="{{url_for('category', name='Fantasy')}}"><span class="glyphicon glyphicon-inbox"></span> Categroies</a></li>
-              <!-- <li class="nav-head">Shelves</li>
-              <li><a href="#"><span class="glyphicon glyphicon-list"></span> My Shelves</a></li>
-              <li class="create-shelf"><a href="#">Create a Shelf</a></li> -->
-            </ul>
-          </nav>
-        </div>
-        <div class="col-sm-10">
-          <div class="discover">
-            <h2>{{title}}</h2>
-            <div class="row">
-
-              {% for entry in entries %}
-              <div class="col-sm-3 col-lg-2 col-xs-6 book">
-                <div class="cover">
-                  {% if entry.has_cover is defined %}
-                    <a href="{{ url_for('show_book', id=entry.id) }}">
-                      <img src="{{ url_for('get_cover', cover_path=entry.path) }}" />
-                    </a>
-                  {% endif %}
-                </div>
-                <div class="meta">
-                  <p class="title">{{entry.title}}</p>
-                  <p class="author"><a href="{{url_for('author', name=entry.authors[0].name) }}">{{entry.authors[0].name}}</a></p>
-                  {% if entry.ratings.__len__() > 0 %}
-                  <div class="rating">
-                    {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
-                      <span class="glyphicon glyphicon-star good"></span>
-                      {% if loop.last and loop.index < 5 %}
-                        {% for numer in range(5 - loop.index) %}
-                          <span class="glyphicon glyphicon-star"></span>
-                        {% endfor %}
-                      {% endif %}
-                    {% endfor %}
-                  </div>
-                  {% endif %}
-                </div>
-              </div>
-                <!-- <p><a href="{{ url_for('edit_book', book_id=entry.id) }}">{{entry.authors[0].name}}: {{entry.title}}</a></p> -->
+      <div class="meta">
+        <p class="title">{{entry.title}}</p>
+        <p class="author"><a href="{{url_for('author', name=entry.authors[0].name) }}">{{entry.authors[0].name}}</a></p>
+        {% if entry.ratings.__len__() > 0 %}
+        <div class="rating">
+          {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
+            <span class="glyphicon glyphicon-star good"></span>
+            {% if loop.last and loop.index < 5 %}
+              {% for numer in range(5 - loop.index) %}
+                <span class="glyphicon glyphicon-star"></span>
               {% endfor %}
-            </div>
-          </div>
+            {% endif %}
+          {% endfor %}
         </div>
+        {% endif %}
       </div>
     </div>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/plugins.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-  </body>
-</html>
+      <!-- <p><a href="{{ url_for('edit_book', book_id=entry.id) }}">{{entry.authors[0].name}}: {{entry.title}}</a></p> -->
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

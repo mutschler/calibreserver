@@ -138,31 +138,47 @@ def feed_hot():
     response.headers["Content-Type"] = "application/xml"
     return response
 
-@app.route("/")
-def index():
+@app.route("/", defaults={'page': 1})
+@app.route('/page/<int:page>')
+def index(page):
     random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
-    entries = db.session.query(db.Books).order_by(db.Books.last_modified.desc()).limit(config.NEWEST_BOOKS)
-    print request.user_agent.__dict__
-    print request.user_agent
-    #{'platform': 'linux', 'version': '528.5', 'string': 'Mozilla/5.0 (Linux; U; de-DE) AppleWebKit/528.5+ (KHTML, like Gecko, Safari/528.5+) Version/4.0 Kindle/3.0 (screen 600x800; rotate)', 'language': 'de-DE', 'browser': 'safari'}
-    #Mozilla/5.0 (Linux; U; de-DE) AppleWebKit/528.5+ (KHTML, like Gecko, Safari/528.5+) Version/4.0 Kindle/3.0 (screen 600x800; rotate)
-    return render_template('index.html', random=random, entries=entries, title="Latest Books")
+    if page == 1:
+        entries = db.session.query(db.Books).order_by(db.Books.last_modified.desc()).limit(config.NEWEST_BOOKS)
+    else:
+        off = int(int(config.NEWEST_BOOKS) * (page - 1))
+        entries = db.session.query(db.Books).order_by(db.Books.last_modified.desc()).offset(off).limit(config.NEWEST_BOOKS)
+    pagination = Pagination(page, config.NEWEST_BOOKS, len(db.session.query(db.Books).all()))
+    return render_template('index.html', random=random, entries=entries, pagination=pagination, title="Latest Books")
 
-@app.route("/hot")
-def hot_books():
+@app.route("/hot", defaults={'page': 1})
+@app.route('/hot/page/<int:page>')
+def hot_books(page):
     random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
-    entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).order_by(db.Books.last_modified.desc()).limit(config.NEWEST_BOOKS)
-    return render_template('index.html', random=random, entries=entries, title="Hot Books")
+    if page == 1:
+        entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).order_by(db.Books.last_modified.desc()).limit(config.NEWEST_BOOKS)
+    else:
+        off = int(int(config.NEWEST_BOOKS) * (page - 1))
+        entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).order_by(db.Books.last_modified.desc()).offset(60).limit(config.NEWEST_BOOKS)
+
+    print entries.first()
+    pagination = Pagination(page, config.NEWEST_BOOKS, len(db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).all()))
+    return render_template('index.html', random=random, entries=entries, pagination=pagination, title="Hot Books")
 
 @app.route("/stats")
 def stats():
     counter = len(db.session.query(db.Books).all())
     return render_template('stats.html', counter=counter, title="Statistics")
 
-@app.route("/discover")
-def discover():
-    entries = db.session.query(db.Books).order_by(func.random()).limit(config.NEWEST_BOOKS)
-    return render_template('discover.html', entries=entries, title="%s Random Books" % config.NEWEST_BOOKS)
+@app.route("/discover", defaults={'page': 1})
+@app.route('/discover/page/<int:page>')
+def discover(page):
+    if page == 1:
+        entries = db.session.query(db.Books).order_by(func.randomblob(2)).limit(config.NEWEST_BOOKS)
+    else:
+        off = int(int(config.NEWEST_BOOKS) * (page - 1))
+        entries = db.session.query(db.Books).order_by(func.randomblob(2)).offset(off).limit(config.NEWEST_BOOKS)
+    pagination = Pagination(page, config.NEWEST_BOOKS, len(db.session.query(db.Books).all()))
+    return render_template('discover.html', entries=entries, pagination=pagination, title="Random Books")
 
 @app.route("/book/<int:id>")
 def show_book(id):

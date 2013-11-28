@@ -39,12 +39,14 @@
           <li><a href="#"><div class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Send ebook to kindle: {{g.user.kindle_mail}}</div></a></li>
         {% endif %}
 
+        {% if g.user.is_authenticated() %}
         <li>
           <span class="glyphicon glyphicon-cloud-download"></span>
           {% for format in entry.data %}
             <a href="{{ url_for('get_download_link', book_id=entry.id, format=format.format|lower) }}">{{format.format}}</a>,
           {%endfor%}
         </li>
+        {% endif %}
 
         <!-- <li>
           <div class="btn-group">

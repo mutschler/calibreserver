@@ -5,7 +5,7 @@ from sqlalchemy.sql.expression import func
 from math import ceil
 from flask.ext.login import LoginManager, login_user, logout_user, login_required, current_user
 from flask.ext.principal import Principal, Identity, AnonymousIdentity, identity_changed
-import requests
+import requests, zipfile
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = (Flask(__name__))
@@ -217,8 +217,31 @@ def author(name):
 def get_cover(cover_path):
     return send_from_directory(os.path.join(config.DB_ROOT, cover_path), "cover.jpg")
 
+@app.route("/read/<int:book_id>")
+@login_required
+def read_book(book_id):
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    book_dir = os.path.join(config.MAIN_DIR, "cps","static", str(book_id))
+    if not os.path.exists(book_dir):
+        for data in book.data:
+            if data.format.lower() == "epub":
+                zfile = zipfile.ZipFile(os.path.join(config.DB_ROOT, book.path, data.name) + ".epub")
+                for name in zfile.namelist():
+                    (dirName, fileName) = os.path.split(name)
+                    newDir = os.path.join(book_dir, dirName)
+                    if not os.path.exists(newDir):
+                        os.mkdir(newDir)
+                    if fileName:
+                        fd = open(os.path.join(newDir, fileName), "wb")
+                        fd.write(zfile.read(name))
+                        fd.close()
+                zfile.close()
+    return render_template('read.html', bookid=book_id, title="Read a Book")
+
 @app.route("/download/<int:book_id>/<format>")
+@login_required
 def get_download_link(book_id, format):
+    format = format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format.upper()).first()
     response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." +format))

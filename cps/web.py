@@ -223,6 +223,7 @@ def read_book(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     book_dir = os.path.join(config.MAIN_DIR, "cps","static", str(book_id))
     if not os.path.exists(book_dir):
+        os.mkdir(book_dir)
         for data in book.data:
             if data.format.lower() == "epub":
                 zfile = zipfile.ZipFile(os.path.join(config.DB_ROOT, book.path, data.name) + ".epub")

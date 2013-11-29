@@ -21,3 +21,7 @@ $(function() {
         $('.load-more .row').isotope( 'appended', $(data), null );
     });
 });
+
+$(window).resize(function(event) {
+    $('.discover .row').isotope('reLayout');
+});

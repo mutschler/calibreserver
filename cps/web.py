@@ -160,7 +160,11 @@ def hot_books(page):
         off = int(int(config.NEWEST_BOOKS) * (page - 1))
         entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).order_by(db.Books.last_modified.desc()).offset(60).limit(config.NEWEST_BOOKS)
 
-    print entries.first()
+    # hot_books = ub.session.query(ub.Downloads, ub.func.count(ub.Downloads.book_id)).order_by(ub.func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id).limit(config.NEWEST_BOOKS)
+    # entries = list()
+    # for book in hot_books:
+    #     entries.append(db.session.query(db.Books).filter(db.Books.id == book.Downloads.book_id).first())
+
     pagination = Pagination(page, config.NEWEST_BOOKS, len(db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).all()))
     return render_template('index.html', random=random, entries=entries, pagination=pagination, title="Hot Books")
 
@@ -264,6 +268,7 @@ def get_download_link(book_id, format):
     format = format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format.upper()).first()
+    helper.update_download(book_id, int(current_user.id))
     response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." +format))
     response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (data.name, format)
     return response
@@ -302,6 +307,7 @@ def send_to_kindle(book_id):
         x = helper.send_mail(book_id, current_user.kindle_mail)
         if x:
             flash("mail successfully send to %s" % current_user.kindle_mail, category="success")
+            helper.update_download(book_id, int(current_user.id))
         else:
             flash("there was an error sending this book", category="error")
     else:
@@ -360,6 +366,9 @@ def show_shelf(shelf_id):
 @login_required
 def profile():
     content = ub.session.query(ub.User).filter(ub.User.id == int(current_user.id)).first()
+    downloads = list()
+    for book in content.downloads:
+        downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
     if request.method == "POST":
         to_save = request.form.to_dict()
         print to_save
@@ -370,7 +379,7 @@ def profile():
         if to_save["user_role"]:
             content.role = int(to_save["user_role"])
         ub.session.commit()
-    return render_template("user_edit.html", content=content, title="%s's profile" % current_user.nickname)
+    return render_template("user_edit.html", content=content, downloads=downloads, title="%s's profile" % current_user.nickname)
 
 @app.route("/admin/user")
 @login_required

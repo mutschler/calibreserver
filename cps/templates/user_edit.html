@@ -32,5 +32,16 @@
     {% endif %}
     <button type="submit" class="btn btn-default">Submit</button>
   </form>
+
+  {% if downloads %}
+    <h2>Recent Downloads</h2>
+    {% for entry in downloads %}
+      <div class="col-sm-2">
+        <a class="pull-left" href="{{ url_for('show_book', id=entry.id) }}">
+          <img class="media-object" width="100" src="{{ url_for('get_cover', cover_path=entry.path) }}" alt="...">
+        </a>
+      </div>
+    {% endfor %}
+  {% endif %}
 </div>
 {% endblock %}

@@ -1,4 +1,4 @@
-from cps import db
+from cps import db, ub
 from cps import config
 
 import smtplib
@@ -12,6 +12,14 @@ from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 from email.generator import Generator
 import subprocess
+
+def update_download(book_id, user_id):
+    check = ub.session.query(ub.Downloads).filter(ub.Downloads.user_id == user_id).filter(ub.Downloads.book_id == book_id).first()
+
+    if not check:
+        new_download = ub.Downloads(user_id=user_id, book_id=book_id)
+        ub.session.add(new_download)
+        ub.session.commit()
 
 def make_mobi(book_id):
     kindlegen = os.path.join(config.MAIN_DIR, "kindlegen")

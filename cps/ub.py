@@ -22,7 +22,7 @@ class User(Base):
 	kindle_mail = Column(String(120), default="")
 	shelf = relationship('Shelf', backref = 'user', lazy = 'dynamic')
 	whislist = relationship('Whislist', backref = 'user', lazy = 'dynamic')
-
+	downloads = relationship('Downloads', backref= 'user', lazy = 'dynamic')
 
 	def is_authenticated(self):
 		return True
@@ -75,6 +75,17 @@ class BookShelf(Base):
 
 	def __repr__(self):
 		return '<Book %r>' % (self.id)
+
+
+class Downloads(Base):
+	__tablename__ = 'downloads'
+
+	id = Column(Integer, primary_key=True)
+	book_id = Column(Integer)
+	user_id = Column(Integer, ForeignKey('user.id'))
+
+	def __repr__(self):
+		return '<Download %r' % (self.book_id)
 
 class Whish(Base):
 	__tablename__ = 'whish'

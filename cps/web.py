@@ -154,18 +154,20 @@ def index(page):
 @app.route('/hot/page/<int:page>')
 def hot_books(page):
     random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
-    if page == 1:
-        entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).order_by(db.Books.last_modified.desc()).limit(config.NEWEST_BOOKS)
-    else:
-        off = int(int(config.NEWEST_BOOKS) * (page - 1))
-        entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).order_by(db.Books.last_modified.desc()).offset(60).limit(config.NEWEST_BOOKS)
+    # if page == 1:
+    #     entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).order_by(db.Books.last_modified.desc()).limit(config.NEWEST_BOOKS)
+    # else:
+    #     off = int(int(config.NEWEST_BOOKS) * (page - 1))
+    #     entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).order_by(db.Books.last_modified.desc()).offset(60).limit(config.NEWEST_BOOKS)
 
-    # hot_books = ub.session.query(ub.Downloads, ub.func.count(ub.Downloads.book_id)).order_by(ub.func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id).limit(config.NEWEST_BOOKS)
-    # entries = list()
-    # for book in hot_books:
-    #     entries.append(db.session.query(db.Books).filter(db.Books.id == book.Downloads.book_id).first())
+    off = int(int(6) * (page - 1))
+    all_books = ub.session.query(ub.Downloads, ub.func.count(ub.Downloads.book_id)).order_by(ub.func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
+    hot_books = all_books.offset(off).limit(config.NEWEST_BOOKS)
+    entries = list()
+    for book in hot_books:
+        entries.append(db.session.query(db.Books).filter(db.Books.id == book.Downloads.book_id).first())
 
-    pagination = Pagination(page, config.NEWEST_BOOKS, len(db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).all()))
+    pagination = Pagination(page, config.NEWEST_BOOKS, len(all_books.all()))
     return render_template('index.html', random=random, entries=entries, pagination=pagination, title="Hot Books")
 
 @app.route("/stats")

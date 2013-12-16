@@ -24,6 +24,20 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 def load_user(id):
     return ub.session.query(ub.User).filter(ub.User.id == int(id)).first()
 
+
+@lm.header_loader
+def load_user_from_header(header_val):
+    print header_val
+    if header_val.startswith('Basic '):
+        header_val = header_val.replace('Basic ', '', 1)
+        print header_val
+    try:
+        header_val = base64.b64decode(header_val)
+        print header_val
+    except TypeError:
+        pass
+    return ub.session.query(ub.User).filter(ub.User.password == header_val).first()
+
 #simple pagination for the feed
 class Pagination(object):
 
@@ -411,6 +425,9 @@ def new_user():
 @login_required
 def edit_user(user_id):
     content = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
+    downloads = list()
+    for book in content.downloads:
+        downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
     if request.method == "POST":
         to_save = request.form.to_dict()
         if "delete" in to_save:
@@ -420,7 +437,7 @@ def edit_user(user_id):
             if "password" in to_save:
                 content.password == generate_password_hash(to_save["password"])
         ub.session.commit()
-    return render_template("user_edit.html", content=content, title="Edit User")
+    return render_template("user_edit.html", content=content, downloads=downloads, title="Edit User %s" % current_user.nickname)
 
 @app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
 @login_required

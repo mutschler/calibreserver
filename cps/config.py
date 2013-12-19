@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import os
 from configobj import ConfigObj
 
@@ -48,9 +51,6 @@ PORT = check_setting_int(CFG, 'General', 'PORT', 8083)
 NEWEST_BOOKS = check_setting_str(CFG, 'General', 'NEWEST_BOOKS', 60)
 RANDOM_BOOKS = check_setting_int(CFG, 'General', 'RANDOM_BOOKS', 6)
 ALL_BOOKS = check_setting_str(CFG, 'General', 'ALL_BOOKS', 100)
-USER = check_setting_str(CFG, 'General', 'USER', "admin")
-PASS = check_setting_str(CFG, 'General', 'PASS', "calibreserver")
-WEB_ADMIN = bool(check_setting_int(CFG, 'General', 'WEB_ADMIN', 1))
 DEVELOPMENT = bool(check_setting_int(CFG, 'General', 'DEVELOPMENT', 1))
 MAIL_SERVER = check_setting_str(CFG, 'General', 'MAIL_SERVER', 'mail.example.com')
 MAIL_LOGIN = check_setting_str(CFG, 'General', 'MAIL_LOGIN', "mail@example.com")
@@ -68,9 +68,6 @@ configval["MAIN_DIR"] = MAIN_DIR
 configval["PORT"] = PORT
 configval["NEWEST_BOOKS"] = NEWEST_BOOKS
 configval["ALL_BOOKS"] = ALL_BOOKS
-configval["USER"] = USER
-configval["PASS"] = PASS
-configval["WEB_ADMIN"] = WEB_ADMIN
 configval["DEVELOPMENT"] = DEVELOPMENT
 configval["MAIL_SERVER"] = MAIL_SERVER
 configval["MAIL_FROM"] = MAIL_FROM
@@ -90,9 +87,6 @@ def save_config(configval):
     new_config['General']['PORT'] = configval["PORT"]
     new_config['General']['NEWEST_BOOKS'] = configval["NEWEST_BOOKS"]
     new_config['General']['ALL_BOOKS'] = configval["ALL_BOOKS"]
-    new_config['General']['USER'] = configval["USER"]
-    new_config['General']['PASS'] = configval["PASS"]
-    new_config['General']['WEB_ADMIN'] = int(configval["WEB_ADMIN"])
     new_config['General']['DEVELOPMENT'] = int(configval["DEVELOPMENT"])
     new_config['General']['MAIL_PORT'] = int(configval["MAIL_PORT"])
     new_config['General']['MAIL_SERVER'] = configval["MAIL_SERVER"]

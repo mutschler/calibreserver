@@ -79,12 +79,30 @@
          <script>
             "use strict";
             EPUBJS.filePath = "{{ url_for('static', filename='js/') }}";
-            var Book = ePub("{{ url_for('static', filename=bookid) }}/", { restore: true });
+            EPUBJS.Hooks.register("beforeChapterDisplay").newStyle = function(callback, chapter){
+              EPUBJS.core.addCss("{{ url_for('static', filename='css/colors.css') }}", false, chapter.doc.head);
+               if(callback) callback();
+            }
+
+            EPUBJS.Hooks.register("beforeChapterDisplay").highlight = function(callback, renderer){
+
+    // EPUBJS.core.addScript("js/libs/jquery.highlight.js", null, renderer.doc.head);
+
+    var s = document.createElement("style");
+    s.innerHTML =".highlight { background: yellow; font-weight: normal; }";
+
+    renderer.doc.head.appendChild(s);
+
+    if(callback) callback();
+
+}
+            var Book = ePub("{{ url_for('static', filename=bookid) }}/", { restore: false });
 
         </script>
     </head>
     <body>
         <div id="main">
+          <select id="toc"></select>
           <div id="prev" onclick="Book.prevPage();" class="arrow">‹</div>
           <div id="area"></div>
           <div id="next" onclick="Book.nextPage();"class="arrow">›</div>
@@ -96,8 +114,40 @@
 <script src="{{ url_for('static', filename='js/hooks.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/epub.min.js') }}"></script> -->
 <script>
-    Book.renderTo("area");
-    Book.setStyle("padding", "0 40px");
+
+
+     Book.getMetadata().then(function(meta){
+
+                document.title = meta.bookTitle+" – "+meta.creator;
+
+            });
+
+    Book.getToc().then(function(toc){
+
+              var $select = document.getElementById("toc"),
+                  docfrag = document.createDocumentFragment();
+
+              toc.forEach(function(chapter) {
+                var option = document.createElement("option");
+                option.textContent = chapter.label;
+                option.ref = chapter.href;
+
+                docfrag.appendChild(option);
+              });
+
+              $select.appendChild(docfrag);
+
+              $select.onchange = function(){
+                  var index = $select.selectedIndex,
+                      url = $select.options[index].ref;
+
+                  Book.goto(url);
+                  return false;
+              }
+
+            });
+      Book.renderTo("area");
+      Book.setStyle("padding", "0 40px");
     // EPUBJS.filePath = "{{ url_for('static', filename='js/') }}";
     // var Book = ePub("{{ url_for('get_download_link', book_id=bookid, format='epub') }}.epub", { restore: true });
     // Book.renderTo("area").then(function(){

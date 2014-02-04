@@ -50,6 +50,7 @@ PORT = check_setting_int(CFG, 'General', 'PORT', 8083)
 NEWEST_BOOKS = check_setting_str(CFG, 'General', 'NEWEST_BOOKS', 60)
 RANDOM_BOOKS = check_setting_int(CFG, 'General', 'RANDOM_BOOKS', 6)
 ALL_BOOKS = check_setting_str(CFG, 'General', 'ALL_BOOKS', 100)
+USE_DL_PASS = bool(check_setting_int(CFG, 'General', 'USE_DL_PASS', 1))
 
 CheckSection('Mail')
 MAIL_SERVER = check_setting_str(CFG, 'Mail', 'MAIL_SERVER', 'mail.example.com')
@@ -80,6 +81,7 @@ configval["MAIL_LOGIN"] = MAIL_LOGIN
 configval["MAIL_PASSWORD"] = MAIL_PASSWORD
 configval["TITLE_REGEX"] = TITLE_REGEX
 configval["FIRST_RUN"] = FIRST_RUN
+configval["USE_DL_PASS"] = USE_DL_PASS
 
 def save_config(configval):
     new_config = ConfigObj()
@@ -91,6 +93,7 @@ def save_config(configval):
     new_config['General']['PORT'] = configval["PORT"]
     new_config['General']['NEWEST_BOOKS'] = configval["NEWEST_BOOKS"]
     new_config['General']['ALL_BOOKS'] = configval["ALL_BOOKS"]
+    new_config['General']['USE_DL_PASS'] = int(configval["USE_DL_PASS"])
     new_config['Mail'] = {}
     new_config['Mail']['MAIL_PORT'] = int(configval["MAIL_PORT"])
     new_config['Mail']['MAIL_SERVER'] = configval["MAIL_SERVER"]

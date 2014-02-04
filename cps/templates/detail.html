@@ -43,11 +43,11 @@
         {{entry.comments[0].text|striptags}}
       {% endif %}
 
-      {% if g.user.is_authenticated() %}
+      {% if g.user.is_authenticated() or not config.USE_DL_PASS %}
       <ul class="list-unstyled more-stuff">
 
 
-        {% if g.user.shelf.all() or g.public_shelfes %}
+        {% if g.user.shelf and g.user.shelf.all() or g.public_shelfes %}
         <li>
           <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">

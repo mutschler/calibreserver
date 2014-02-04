@@ -260,8 +260,11 @@ def get_cover(cover_path):
     return send_from_directory(os.path.join(config.DB_ROOT, cover_path), "cover.jpg")
 
 @app.route("/read/<int:book_id>")
-@login_required
 def read_book(book_id):
+    if config.USE_DL_PASS:
+        if not current_user.is_authenticated():
+            return app.login_manager.unauthorized()
+
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     book_dir = os.path.join(config.MAIN_DIR, "cps","static", str(book_id))
     if not os.path.exists(book_dir):
@@ -282,12 +285,16 @@ def read_book(book_id):
     return render_template('read.html', bookid=book_id, title="Read a Book")
 
 @app.route("/download/<int:book_id>/<format>")
-@login_required
 def get_download_link(book_id, format):
+    if config.USE_DL_PASS:
+        if not current_user.is_authenticated():
+            return app.login_manager.unauthorized()
+
     format = format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format.upper()).first()
-    helper.update_download(book_id, int(current_user.id))
+    if config.USE_DL_PASS:
+        helper.update_download(book_id, int(current_user.id))
     response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." +format))
     response.headers["Content-Disposition"] = "attachment; filename='%s.%s'" % (data.name, format)
     return response

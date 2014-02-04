@@ -6,6 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
 import os
 from cps import config
+import datetime
 
 dbpath = os.path.join(config.MAIN_DIR, "app.db")
 engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
@@ -86,6 +87,7 @@ class Downloads(Base):
 	id = Column(Integer, primary_key=True)
 	book_id = Column(Integer)
 	user_id = Column(Integer, ForeignKey('user.id'))
+	time = Column(DateTime, default=datetime.datetime.now())
 
 	def __repr__(self):
 		return '<Download %r' % (self.book_id)

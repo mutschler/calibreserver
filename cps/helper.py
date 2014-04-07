@@ -7,6 +7,7 @@ from cps import config
 import smtplib
 import sys
 import os
+import datetime
 import traceback
 from StringIO import StringIO
 from email import encoders
@@ -20,7 +21,7 @@ def update_download(book_id, user_id):
     check = ub.session.query(ub.Downloads).filter(ub.Downloads.user_id == user_id).filter(ub.Downloads.book_id == book_id).first()
 
     if not check:
-        new_download = ub.Downloads(user_id=user_id, book_id=book_id)
+        new_download = ub.Downloads(user_id=user_id, book_id=book_id, time=datetime.datetime.now())
         ub.session.add(new_download)
         ub.session.commit()
 

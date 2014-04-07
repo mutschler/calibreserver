@@ -393,7 +393,7 @@ def show_shelf(shelf_id):
 def profile():
     content = ub.session.query(ub.User).filter(ub.User.id == int(current_user.id)).first()
     downloads = list()
-    for book in content.downloads.order_by(ub.Downloads.time.asc()).all():
+    for book in content.downloads.order_by(ub.Downloads.time.desc()).all():
         downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
     if request.method == "POST":
         to_save = request.form.to_dict()
@@ -436,7 +436,7 @@ def new_user():
 def edit_user(user_id):
     content = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
     downloads = list()
-    for book in content.downloads.order_by(ub.Downloads.time.asc()).all():
+    for book in content.downloads.order_by(ub.Downloads.time.desc()).all():
         downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
     if request.method == "POST":
         to_save = request.form.to_dict()

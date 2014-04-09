@@ -5,15 +5,15 @@
   <form role="form" method="POST">
     <div class="form-group">
       <label for="email">e-mail</label>
-      <input type="email" class="form-control" name="email" id="email" value="{{content.email}}">
+      <input type="email" class="form-control" name="email" id="email" placeholder="your@mail.com" {% if content.email %}value="{{content.email}}"{% endif %}>
     </div>
     <div class="form-group">
       <label for="password">password</label>
-      <input type="password" class="form-control" name="password" id="password" value="">
+      <input type="password" class="form-control" name="password" id="password" placeholder="mysecretpassword" value="">
     </div>
     <div class="form-group">
       <label for="kindle_mail">Kindle E-Mail</label>
-      <input type="text" class="form-control" name="kindle_mail" id="kindle_mail" value="{{content.kindle_mail}}">
+      <input type="text" class="form-control" name="kindle_mail" id="kindle_mail" placeholder="mail@kindle.com" {% if content.kindle_mail %}value="{{content.kindle_mail}}"{% endif %}>
     </div>
     {% if g.user and g.user.role %}
     <div class="form-group">
@@ -22,7 +22,7 @@
     </div>
     <div class="form-group">
       <label for="nickname">nickname</label>
-      <input type="text" class="form-control" name="nickname" id="nickname" value="{{content.nickname}}">
+      <input type="text" class="form-control" name="nickname" id="nickname" placeholder="Nickname" {% if content.nickname %}value="{{content.nickname}}"{% endif %}>
     </div>
     <div class="checkbox">
       <label>

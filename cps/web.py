@@ -422,7 +422,11 @@ def new_user():
         content.password = generate_password_hash(to_save["password"])
         content.nickname = to_save["nickname"]
         content.email = to_save["email"]
-        content.role = int(to_save["user_role"])
+        if to_save["user_role"]:
+            content.role = int(to_save["user_role"])
+        else:
+            content.role = 0
+
         try:
             ub.session.add(content)
             ub.session.commit()
@@ -446,6 +450,10 @@ def edit_user(user_id):
         else:
             if "password" in to_save:
                 content.password == generate_password_hash(to_save["password"])
+            if to_save["user_role"]:
+                content.role = int(to_save["user_role"])
+            else:
+                content.role = 0
         ub.session.commit()
     return render_template("user_edit.html", content=content, downloads=downloads, title="Edit User %s" % current_user.nickname)
 

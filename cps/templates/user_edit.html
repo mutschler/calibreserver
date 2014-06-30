@@ -24,6 +24,18 @@
       <label for="nickname">{{_('nickname')}}</label>
       <input type="text" class="form-control" name="nickname" id="nickname" value="{{content.nickname}}">
     </div>
+    <div class="form-group">
+      <label for="locale">{{_('Language')}}</label>
+        <select name="locale" id="locale" class="form-control">
+            {%  if content.locale %}
+                <option value="{{ content.locale }}">{{ content.locale }}</option>
+            {% else %}
+                <option value="">{{ _('Select a language') }}</option>
+            {% endif %}
+            <option value="de">de</option>
+            <option value="en">en</option>
+        </select>
+    </div>
     <div class="checkbox">
       <label>
         <input type="checkbox" name="delete"> {{_('Delete this user')}}

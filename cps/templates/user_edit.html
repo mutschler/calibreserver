@@ -5,20 +5,20 @@
   <form role="form" method="POST">
     <div class="form-group">
       <label for="email">{{_('E-Mail')}}</label>
-      <input type="email" class="form-control" name="email" id="email" value="{{content.email}}">
+      <input type="email" class="form-control" name="email" id="email" placeholder="your@mail.com" {% if content.email %}value="{{content.email}}"{% endif %}>
     </div>
     <div class="form-group">
       <label for="password">{{_('Password')}}</label>
-      <input type="password" class="form-control" name="password" id="password" value="">
+      <input type="password" class="form-control" name="password" id="password" placeholder="mysecretpassword" value="">
     </div>
     <div class="form-group">
       <label for="kindle_mail">{{_('Kindle E-Mail')}}</label>
-      <input type="text" class="form-control" name="kindle_mail" id="kindle_mail" value="{{content.kindle_mail}}">
+      <input type="text" class="form-control" name="kindle_mail" id="kindle_mail"  placeholder="mail@kindle.com" {% if content.kindle_mail %}value="{{content.kindle_mail}}"{% endif %}>
     </div>
     {% if g.user and g.user.role %}
     <div class="form-group">
-      <label for="user_role">{{_('is admin')}}</label>
-      <input type="text" class="form-control" name="user_role" id="user_role" value="{{content.role}}">
+      <label for="user_role">{{_('Admin')}}</label>
+      <input type="checkbox" name="user_role" {% if content.role %}checked{% endif %}> {{_('is admin')}}
     </div>
     <div class="form-group">
       <label for="nickname">{{_('nickname')}}</label>

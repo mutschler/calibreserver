@@ -27,7 +27,7 @@
 
 
       {% if entry.series|length > 0 %}
-        <p>Book {{entry.series_index}} of <a href="{{url_for('series', name=entry.series[0].name)}}">{{entry.series[0].name}}</a></p>
+        <p>{{_('Book')}} {{entry.series_index}} of <a href="{{url_for('series', name=entry.series[0].name)}}">{{entry.series[0].name}}</a></p>
       {% endif %}
 
       {% if entry.tags|length > 0 %}
@@ -39,7 +39,7 @@
       {% endif %}
 
       {% if entry.comments|length > 0 %}
-        <h3>Description:</h3>
+        <h3>{{_('Description:')}}</h3>
         {{entry.comments[0].text|striptags}}
       {% endif %}
 
@@ -51,7 +51,7 @@
         <li>
           <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-              <span class="glyphicon glyphicon-list"></span> add this book to a shelf <span class="caret"></span>
+              <span class="glyphicon glyphicon-list"></span> {{_('add this book to a shelf ')}}<span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
               {% for shelf in g.user.shelf %}
@@ -66,7 +66,7 @@
         {% endif %}
 
         {% if g.user.kindle_mail %}
-          <li><a href="{{url_for('send_to_kindle', book_id=entry.id)}}"><div class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Send ebook to kindle</div></a></li>
+          <li><a href="{{url_for('send_to_kindle', book_id=entry.id)}}"><div class="btn btn-default"><span class="glyphicon glyphicon-send"></span>{{_('Send ebook to kindle ')}}</div></a></li>
         {% endif %}
 
 
@@ -81,7 +81,7 @@
         <li>
           <div class="btn-group">
             <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-              <span class="glyphicon glyphicon-download"></span> download this ebook <span class="caret"></span>
+              <span class="glyphicon glyphicon-download"></span>{{_('download this ebook')}} <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
               {% for format in entry.data %}
@@ -91,11 +91,11 @@
           </div>
         </li>
 
-        <li><a target="_blank" href="{{url_for('read_book', book_id=entry.id)}}"><div class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span> read this book online</div></a></li>
+        <li><a target="_blank" href="{{url_for('read_book', book_id=entry.id)}}"><div class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span>{{_('read this book online')}} </div></a></li>
 
         {% if g.user.role %}
-          <li><a href="{{ url_for('edit_book', book_id=entry.id) }}"><div class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit book</div></a></li>
-          <li><a href="{{ url_for('edit_book', book_id=entry.id) }}"><div class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete book</div></a></li>
+          <li><a href="{{ url_for('edit_book', book_id=entry.id) }}"><div class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span>{{_('Edit book')}} </div></a></li>
+          <li><a href="{{ url_for('edit_book', book_id=entry.id) }}"><div class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>{{_('Delete book')}} </div></a></li>
         {% endif %}
       {% endif %}
       </ul>

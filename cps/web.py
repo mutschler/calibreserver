@@ -10,6 +10,8 @@ from sqlalchemy.sql.expression import func
 from math import ceil
 from flask.ext.login import LoginManager, login_user, logout_user, login_required, current_user
 from flask.ext.principal import Principal, Identity, AnonymousIdentity, identity_changed
+from flask.ext.babel import Babel
+from flask.ext.babel import gettext as _
 import requests, zipfile
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -17,11 +19,31 @@ app = (Flask(__name__))
 
 Principal(app)
 
+
 lm = LoginManager(app)
 lm.init_app(app)
 lm.login_view = 'login'
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+
+babel = Babel(app)
+
+@babel.localeselector
+def get_locale():
+    # if a user is logged in, use the locale from the user settings
+    # user = getattr(g, 'user', None)
+    # if user is not None:
+    #     return user.locale
+    # otherwise try to guess the language from the user accept
+    # header the browser transmits.  We support de/fr/en in this
+    # example.  The best match wins.
+    return request.accept_languages.best_match(['de', 'en'])
+
+@babel.timezoneselector
+def get_timezone():
+    user = getattr(g, 'user', None)
+    if user is not None:
+        return user.timezone
 
 @lm.user_loader
 def load_user(id):
@@ -165,7 +187,7 @@ def index(page):
         off = int(int(config.NEWEST_BOOKS) * (page - 1))
         entries = db.session.query(db.Books).order_by(db.Books.last_modified.desc()).offset(off).limit(config.NEWEST_BOOKS)
     pagination = Pagination(page, config.NEWEST_BOOKS, len(db.session.query(db.Books).all()))
-    return render_template('index.html', random=random, entries=entries, pagination=pagination, title="Latest Books")
+    return render_template('index.html', random=random, entries=entries, pagination=pagination, title=_("Latest Books"))
 
 @app.route("/hot", defaults={'page': 1})
 @app.route('/hot/page/<int:page>')
@@ -185,12 +207,12 @@ def hot_books(page):
         entries.append(db.session.query(db.Books).filter(db.Books.id == book.Downloads.book_id).first())
 
     pagination = Pagination(page, config.NEWEST_BOOKS, len(all_books.all()))
-    return render_template('index.html', random=random, entries=entries, pagination=pagination, title="Hot Books")
+    return render_template('index.html', random=random, entries=entries, pagination=pagination, title=_("Hot Books"))
 
 @app.route("/stats")
 def stats():
     counter = len(db.session.query(db.Books).all())
-    return render_template('stats.html', counter=counter, title="Statistics")
+    return render_template('stats.html', counter=counter, title=_("Statistics"))
 
 @app.route("/discover", defaults={'page': 1})
 @app.route('/discover/page/<int:page>')
@@ -201,7 +223,7 @@ def discover(page):
         off = int(int(config.NEWEST_BOOKS) * (page - 1))
         entries = db.session.query(db.Books).order_by(func.randomblob(2)).offset(off).limit(config.NEWEST_BOOKS)
     pagination = Pagination(page, config.NEWEST_BOOKS, len(db.session.query(db.Books).all()))
-    return render_template('discover.html', entries=entries, pagination=pagination, title="Random Books")
+    return render_template('discover.html', entries=entries, pagination=pagination, title=_("Random Books"))
 
 @app.route("/book/<int:id>")
 def show_book(id):
@@ -211,7 +233,7 @@ def show_book(id):
 @app.route("/category")
 def category_list():
     entries = db.session.query(db.Tags).order_by(db.Tags.name).all()
-    return render_template('categories.html', entries=entries, title="Category list")
+    return render_template('categories.html', entries=entries, title=_("Category list"))
 
 @app.route("/category/<name>")
 def category(name):
@@ -220,13 +242,13 @@ def category(name):
         entries = db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.name.like("%" +name + "%" ))).order_by(db.Books.last_modified.desc()).all()
     else:
         entries = db.session.query(db.Books).all()
-    return render_template('index.html', random=random, entries=entries, title="Category: %s" % name)
+    return render_template('index.html', random=random, entries=entries, title=_("Category: %(name)s", name=name))
 
 @app.route("/series/<name>")
 def series(name):
     random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
     entries = db.session.query(db.Books).filter(db.Books.series.any(db.Series.name.like("%" +name + "%" ))).order_by(db.Books.series_index).all()
-    return render_template('index.html', random=random, entries=entries, title="Series: %s" % name)
+    return render_template('index.html', random=random, entries=entries, title=_("Series: %(name)s", name=name))
 
 
 @app.route("/admin/")
@@ -247,13 +269,13 @@ def search():
 @app.route("/author")
 def author_list():
     entries = db.session.query(db.Authors).order_by(db.Authors.sort).all()
-    return render_template('authors.html', entries=entries, title="Author list")
+    return render_template('authors.html', entries=entries, title=_("Author list"))
 
 @app.route("/author/<name>")
 def author(name):
     random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
     entries = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.name.like("%" +  name + "%"))).all()
-    return render_template('index.html', random=random, entries=entries, title="Author: %s" % name)
+    return render_template('index.html', random=random, entries=entries, title=_("Author: %(name)s", name=name))
 
 @app.route("/cover/<path:cover_path>")
 def get_cover(cover_path):
@@ -282,7 +304,7 @@ def read_book(book_id):
                         fd.write(zfile.read(name))
                         fd.close()
                 zfile.close()
-    return render_template('read.html', bookid=book_id, title="Read a Book")
+    return render_template('read.html', bookid=book_id, title=_("Read a Book"))
 
 @app.route("/download/<int:book_id>/<format>")
 def get_download_link(book_id, format):
@@ -311,10 +333,10 @@ def login():
 
         if user and check_password_hash(user.password, form['password']):
             login_user(user, remember = True)
-            flash("you are now logged in as: '%s'" % user.nickname, category="success")
+            flash(_("you are now logged in as: '%(username)s'", username=user.nickname), category="success")
             return redirect(request.args.get("next") or url_for("index"))
         else:
-            flash("Wrong Username or Password", category="error")
+            flash(_("Wrong Username or Password"), category="error")
 
     return render_template('login.html', title="login")
 
@@ -332,12 +354,12 @@ def send_to_kindle(book_id):
     if current_user.kindle_mail:
         x = helper.send_mail(book_id, current_user.kindle_mail)
         if x:
-            flash("mail successfully send to %s" % current_user.kindle_mail, category="success")
+            flash(_("mail successfully send to %(usermail)s", usermail=current_user.kindle_mail), category="success")
             helper.update_download(book_id, int(current_user.id))
         else:
-            flash("there was an error sending this book", category="error")
+            flash(_("there was an error sending this book"), category="error")
     else:
-        flash("please set a kindle mail first...", category="error")
+        flash(_("please set a kindle mail first..."), category="error")
     return redirect(request.environ["HTTP_REFERER"])
 
 @app.route("/shelf/add/<int:shelf_id>/<int:book_id>")
@@ -345,7 +367,7 @@ def send_to_kindle(book_id):
 def add_to_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
-        flash("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
+        flash(_("Sorry you are not allowed to add a book to the the shelf: %(name)s", name=shelf.name))
         return redirect(url_for('index'))
 
     ins = ub.BookShelf(shelf=shelf.id, book_id=book_id)
@@ -367,12 +389,12 @@ def create_shelf():
         try:
             ub.session.add(shelf)
             ub.session.commit()
-            flash("Shelf %s created" % to_save["title"], category="success")
+            flash(_("Shelf %(title)s created", title=to_save["title"]), category="success")
         except:
-            flash("there was an error", category="error")
-        return render_template('shelf_edit.html', title="create a shelf")
+            flash(_("there was an error"), category="error")
+        return render_template('shelf_edit.html', title=_("create a shelf"))
     else:
-        return render_template('shelf_edit.html', title="create a shelf")
+        return render_template('shelf_edit.html', title=_("create a shelf"))
 
 
 @app.route("/shelf/<int:shelf_id>")
@@ -386,7 +408,7 @@ def show_shelf(shelf_id):
             cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
             result.append(cur_book)
 
-    return render_template('shelf.html', entries=result, title="Shelf: '%s'" % shelf.name)
+    return render_template('shelf.html', entries=result, title=_("Shelf: '%(name)s'", name=shelf.name))
 
 @app.route("/me", methods = ["GET", "POST"])
 @login_required
@@ -405,13 +427,13 @@ def profile():
         if to_save["user_role"]:
             content.role = int(to_save["user_role"])
         ub.session.commit()
-    return render_template("user_edit.html", content=content, downloads=downloads, title="%s's profile" % current_user.nickname)
+    return render_template("user_edit.html", content=content, downloads=downloads, title=_("%(username)s's profile", username=current_user.nickname))
 
 @app.route("/admin/user")
 @login_required
 def user_list():
     content = ub.session.query(ub.User).all()
-    return render_template("user_list.html", content=content, title="User list")
+    return render_template("user_list.html", content=content, title=_("User list"))
 
 @app.route("/admin/user/new", methods = ["GET", "POST"])
 @login_required
@@ -426,10 +448,10 @@ def new_user():
         try:
             ub.session.add(content)
             ub.session.commit()
-            flash("User created", category="success")
+            flash(_("User created"), category="success")
         except (e):
             flash(e, category="error")
-    return render_template("user_edit.html", content=content, title="User list")
+    return render_template("user_edit.html", content=content, title=_("User list"))
 
 @app.route("/admin/user/<int:user_id>", methods = ["GET", "POST"])
 @login_required
@@ -447,7 +469,7 @@ def edit_user(user_id):
             if "password" in to_save:
                 content.password == generate_password_hash(to_save["password"])
         ub.session.commit()
-    return render_template("user_edit.html", content=content, downloads=downloads, title="Edit User %s" % current_user.nickname)
+    return render_template("user_edit.html", content=content, downloads=downloads, title=_("Edit User %(username)s" , username=current_user.nickname))
 
 @app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
 @login_required

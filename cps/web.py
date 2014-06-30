@@ -14,6 +14,7 @@ from flask.ext.babel import Babel
 from flask.ext.babel import gettext as _
 import requests, zipfile
 from werkzeug.security import generate_password_hash, check_password_hash
+from babel import Locale as LC
 
 app = (Flask(__name__))
 
@@ -224,6 +225,24 @@ def discover(page):
         entries = db.session.query(db.Books).order_by(func.randomblob(2)).offset(off).limit(config.NEWEST_BOOKS)
     pagination = Pagination(page, config.NEWEST_BOOKS, len(db.session.query(db.Books).all()))
     return render_template('discover.html', entries=entries, pagination=pagination, title=_("Random Books"))
+
+@app.route("/language")
+def language_overview():
+    languages = db.session.query(db.Languages).all()
+
+    for lang in languages:
+        cur_l = LC.parse(lang.lang_code)
+        lang.name = cur_l.get_language_name(get_locale())
+
+    return render_template('languages.html', languages=languages,  title=_("Available languages"))
+
+@app.route("/language/<name>")
+def language(name):
+    random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
+    entries = db.session.query(db.Books).filter(db.Books.languages.any(db.Languages.lang_code == name )).order_by(db.Books.last_modified.desc()).all()
+    cur_l = LC.parse(name)
+    name = cur_l.get_language_name(get_locale())
+    return render_template('index.html', random=random, entries=entries, title=_("Language: %(name)s", name=name))
 
 @app.route("/book/<int:id>")
 def show_book(id):

@@ -84,6 +84,7 @@
               <li><a href="{{url_for('discover')}}"><span class="glyphicon glyphicon-random"></span> {{_('Discover')}} </a></li>
               <li><a href="{{url_for('category_list')}}"><span class="glyphicon glyphicon-inbox"></span> {{_('Categorys')}} </a></li>
               <li><a href="{{url_for('author_list')}}"><span class="glyphicon glyphicon-user"></span> {{_('Authors')}} </a></li>
+              <li><a href="{{url_for('language_overview')}}"><span class="glyphicon glyphicon-flag"></span> {{_('Languages')}} </a></li>
 
               {% if g.user.is_authenticated() %}
                {% if g.public_shelfes %}

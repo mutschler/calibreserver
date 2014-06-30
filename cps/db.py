@@ -44,6 +44,11 @@ books_ratings_link = Table('books_ratings_link', Base.metadata,
 	Column('rating', Integer, ForeignKey('ratings.id'), primary_key=True)
 	)
 
+books_languages_link = Table('books_languages_link', Base.metadata,
+	Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+	Column('lang_code', Integer, ForeignKey('languages.id'), primary_key=True)
+	)
+
 
 class Comments(Base):
 	__tablename__ = 'comments'
@@ -132,6 +137,15 @@ class Data(Base):
 	def __repr__(self):
 		return u"<Data('{0},{1}{2}{3}')>".format(self.book, self.format, self.uncompressed_size, self.name)
 
+class Languages(Base):
+	__tablename__ = 'languages'
+
+	id = Column(Integer,primary_key=True)
+	lang_code = Column(String)
+
+	def __repr__(self):
+		return u"<Lanuage('{0},{1}')>".format(self.id, self.lang_code)
+
 class Books(Base):
 	__tablename__ = 'books'
 
@@ -151,6 +165,7 @@ class Books(Base):
 	data = relationship('Data', backref='books')
 	series = relationship('Series', secondary=books_series_link, backref='books')
 	ratings = relationship('Ratings', secondary=books_ratings_link, backref='books')
+	languages = relationship('Languages', secondary=books_languages_link, backref='books')
 
 	def __init__(self, title, sort, timestamp, pubdate, series_index, last_modified, path, has_cover, authors, tags):
 		self.title = title

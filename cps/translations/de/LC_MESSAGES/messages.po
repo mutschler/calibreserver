@@ -7,118 +7,129 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-06-30 16:43+0200\n"
-"PO-Revision-Date: 2014-06-30 16:33+0100\n"
+"POT-Creation-Date: 2014-06-30 18:51+0200\n"
+"PO-Revision-Date: 2014-06-30 18:52+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: de <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
+"Language: de\n"
+"X-Generator: Poedit 1.6.5\n"
 
-#: cps/web.py:190
+#: cps/web.py:191
 msgid "Latest Books"
 msgstr "Neuste Bücher"
 
-#: cps/web.py:210 cps/templates/layout.html:82
+#: cps/web.py:211 cps/templates/layout.html:82
 msgid "Hot Books"
 msgstr "Beliebte Bücher"
 
-#: cps/web.py:215
+#: cps/web.py:216
 msgid "Statistics"
 msgstr "Statisktiken"
 
-#: cps/web.py:226
+#: cps/web.py:227
 msgid "Random Books"
 msgstr "Zufällige Bücher"
 
-#: cps/web.py:236
+#: cps/web.py:237
+msgid "Available languages"
+msgstr "Verfügbare Sprachen"
+
+#: cps/web.py:245
+#, python-format
+msgid "Language: %(name)s"
+msgstr "Sprache: %(name)s"
+
+#: cps/web.py:255
 msgid "Category list"
 msgstr "Kategorie Übersicht"
 
-#: cps/web.py:245
+#: cps/web.py:264
 #, python-format
 msgid "Category: %(name)s"
 msgstr "Kategorie: %(name)s"
 
-#: cps/web.py:251
+#: cps/web.py:270
 #, python-format
 msgid "Series: %(name)s"
 msgstr "Serie: %(name)s"
 
-#: cps/web.py:272
+#: cps/web.py:291
 msgid "Author list"
 msgstr "Autoren Übersicht"
 
-#: cps/web.py:278
+#: cps/web.py:297
 #, python-format
 msgid "Author: %(name)s"
 msgstr "Autor: '%(name)s'"
 
-#: cps/web.py:307
+#: cps/web.py:326
 msgid "Read a Book"
 msgstr "Buch lesen"
 
-#: cps/web.py:336
+#: cps/web.py:355
 #, python-format
 msgid "you are now logged in as: '%(username)s'"
 msgstr "Du bist nun als  '%(username)s' angemeldet"
 
-#: cps/web.py:339
+#: cps/web.py:358
 msgid "Wrong Username or Password"
 msgstr "Falscher Benutzername und/oder Passwort"
 
-#: cps/web.py:357
+#: cps/web.py:376
 #, python-format
 msgid "mail successfully send to %(usermail)s"
 msgstr "E-Mail wurde an %(usermail)s gesendet"
 
-#: cps/web.py:360
+#: cps/web.py:379
 msgid "there was an error sending this book"
 msgstr "Beim senden dieses Buches ist ein Fehler aufgetreten"
 
-#: cps/web.py:362
+#: cps/web.py:381
 msgid "please set a kindle mail first..."
 msgstr "Bitte zuerst eine Kindle E-Mail angeben"
 
-#: cps/web.py:370
+#: cps/web.py:389
 #, python-format
 msgid "Sorry you are not allowed to add a book to the the shelf: %(name)s"
 msgstr "Du hast keine Berechtigung etwas zum Regal %(name)s hinzuzufügen"
 
-#: cps/web.py:392
+#: cps/web.py:411
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "Shelf %(title)s angelegt"
 
-#: cps/web.py:394
+#: cps/web.py:413
 msgid "there was an error"
 msgstr "Es gab einen Fehler"
 
-#: cps/web.py:395 cps/web.py:397
+#: cps/web.py:414 cps/web.py:416
 msgid "create a shelf"
 msgstr "Regal erstellen"
 
-#: cps/web.py:411
+#: cps/web.py:430
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Regal: '%(name)s'"
 
-#: cps/web.py:430
+#: cps/web.py:449
 #, python-format
 msgid "%(username)s's profile"
 msgstr "%(username)s's Profil"
 
-#: cps/web.py:436 cps/web.py:458
+#: cps/web.py:455 cps/web.py:477
 msgid "User list"
 msgstr "Benutzer auflisten"
 
-#: cps/web.py:455
+#: cps/web.py:474
 msgid "User created"
 msgstr "Benutzer angelegt"
 
-#: cps/web.py:480
+#: cps/web.py:499
 #, python-format
 msgid "Edit User %(username)s"
 msgstr "Benutzer bearbeiten: %(username)s"
@@ -244,15 +255,19 @@ msgstr "Kategorien"
 msgid "Authors"
 msgstr "Autoren"
 
-#: cps/templates/layout.html:90
+#: cps/templates/layout.html:87
+msgid "Languages"
+msgstr "Sprachen"
+
+#: cps/templates/layout.html:91
 msgid "Public Shelves"
 msgstr "Öffentliche Regale"
 
-#: cps/templates/layout.html:95
+#: cps/templates/layout.html:96
 msgid "Your Shelves"
 msgstr "Deine Regale"
 
-#: cps/templates/layout.html:101
+#: cps/templates/layout.html:102
 msgid "Create a Shelf"
 msgstr "Regal erstellen"
 
@@ -323,4 +338,3 @@ msgstr "Zuletzt Heruntergeladen"
 #: cps/templates/user_list.html:6
 msgid "create new user"
 msgstr "Neuen Benutzer erstellen"
-

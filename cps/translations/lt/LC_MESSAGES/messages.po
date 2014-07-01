@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-07-01 12:38+0200\n"
-"PO-Revision-Date: 2014-07-01 12:53+0100\n"
+"POT-Creation-Date: 2014-07-01 23:27+0200\n"
+"PO-Revision-Date: 2014-07-01 23:30+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: lt <LL@li.org>\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
@@ -20,122 +20,122 @@ msgstr ""
 "Language: lt\n"
 "X-Generator: Poedit 1.6.5\n"
 
-#: cps/web.py:191
+#: cps/web.py:147
 msgid "Latest Books"
 msgstr "l4t35t b00kz"
 
-#: cps/web.py:211 cps/templates/layout.html:82
+#: cps/web.py:165 cps/templates/layout.html:82
 msgid "Hot Books"
 msgstr "h4wt b00kz"
 
-#: cps/web.py:216
+#: cps/web.py:170
 msgid "Statistics"
 msgstr "st4t!5t!cz"
 
-#: cps/web.py:227
+#: cps/web.py:181
 msgid "Random Books"
 msgstr "r4nd0m b00kz"
 
-#: cps/web.py:237
+#: cps/web.py:191
 msgid "Available languages"
 msgstr "4v41L4bL3 l4ngu4g3z"
 
-#: cps/web.py:245
+#: cps/web.py:203
 #, python-format
 msgid "Language: %(name)s"
 msgstr "l4ngu4g3 : %(name)s"
 
-#: cps/web.py:255
+#: cps/web.py:213
 msgid "Category list"
 msgstr "c4t3g0ry l1st"
 
-#: cps/web.py:264
+#: cps/web.py:226
 #, python-format
 msgid "Category: %(name)s"
 msgstr "c4t3g0ry : %(name)s"
 
-#: cps/web.py:270
+#: cps/web.py:236
 #, python-format
 msgid "Series: %(name)s"
 msgstr "s3r13z: %(name)s"
 
-#: cps/web.py:291
+#: cps/web.py:256
 msgid "Author list"
 msgstr "4uth0r l1st"
 
-#: cps/web.py:297
+#: cps/web.py:266
 #, python-format
 msgid "Author: %(name)s"
 msgstr "4uth0r: %(name)s"
 
-#: cps/web.py:326
+#: cps/web.py:295
 msgid "Read a Book"
 msgstr "r34d @ B00k"
 
-#: cps/web.py:355
+#: cps/web.py:324
 #, python-format
 msgid "you are now logged in as: '%(username)s'"
 msgstr "j00 1z n0w l0gg3d 1n 4z: '%(username)s'"
 
-#: cps/web.py:358
+#: cps/web.py:327
 msgid "Wrong Username or Password"
 msgstr "wr0ng us3rn4m3 0r p4ssw0rd"
 
-#: cps/web.py:376
+#: cps/web.py:345
 #, python-format
 msgid "mail successfully send to %(usermail)s"
 msgstr "m41L succ3ssfuLLy s3nd 2 %(usermail)s"
 
-#: cps/web.py:379
+#: cps/web.py:348
 msgid "there was an error sending this book"
 msgstr "th3r3 wuz n 3rr0r s3nd1n' d1z b00k"
 
-#: cps/web.py:381
+#: cps/web.py:350
 msgid "please set a kindle mail first..."
 msgstr "pL34s3 s3t @ k1ndL3 m41L f1rst..."
 
-#: cps/web.py:389
+#: cps/web.py:358
 #, python-format
 msgid "Sorry you are not allowed to add a book to the the shelf: %(name)s"
 msgstr "bumm3d 0ut j00 1z n0t 4LL0w3d 2 4dd @ b00k 2 t3h t3h sh3Lf: %(name)s"
 
-#: cps/web.py:411
+#: cps/web.py:380
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "sSh3Lf %(title)s cr34t3d"
 
-#: cps/web.py:413
+#: cps/web.py:382
 msgid "there was an error"
 msgstr "th3r3 wuz n 3rr0r"
 
-#: cps/web.py:414 cps/web.py:416
+#: cps/web.py:383 cps/web.py:385
 msgid "create a shelf"
 msgstr "cr34t3 @ sh3Lf"
 
-#: cps/web.py:433
+#: cps/web.py:402
 #, python-format
 msgid "successfully deleted shelf %(name)s"
 msgstr "succ3ssfuLLy d3L3t3d sh3Lf %(name)s"
 
-#: cps/web.py:447
+#: cps/web.py:416
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "sh3Lf: '%(name)s'"
 
-#: cps/web.py:468
+#: cps/web.py:443
 #, python-format
 msgid "%(username)s's profile"
 msgstr "%(username)s's pr0f1L3"
 
-#: cps/web.py:474 cps/web.py:496
+#: cps/web.py:451 cps/web.py:477
 msgid "User list"
 msgstr "us3r l1st"
 
-#: cps/web.py:493
+#: cps/web.py:474
 msgid "User created"
 msgstr "us3r cr34t3d"
 
-#: cps/web.py:518
+#: cps/web.py:506
 #, python-format
 msgid "Edit User %(username)s"
 msgstr "3d1t us3r %(username)s"
@@ -212,7 +212,7 @@ msgstr "v13w b00k 4ft3r 3d1t"
 msgid "Save Changes"
 msgstr "s4v3 ch4ng3z"
 
-#: cps/templates/index.html:4
+#: cps/templates/index.html:5
 msgid "Discover (Random Books)"
 msgstr "d1sc0v3r (r4nd0m b00kz)"
 
@@ -228,7 +228,7 @@ msgstr "t0ggL3 n4v1g4t10n"
 msgid "Submit"
 msgstr "subm1t"
 
-#: cps/templates/layout.html:48 cps/templates/user_edit.html:20
+#: cps/templates/layout.html:48 cps/templates/user_edit.html:49
 msgid "Admin"
 msgstr "4dm1n"
 
@@ -325,31 +325,47 @@ msgstr "3-M41L"
 msgid "Kindle E-Mail"
 msgstr "k1ndL3 3-M41L"
 
-#: cps/templates/user_edit.html:21
-msgid "is admin"
-msgstr "b 4dm1n"
-
-#: cps/templates/user_edit.html:24
-msgid "nickname"
-msgstr "n1ckn4m3"
-
-#: cps/templates/user_edit.html:28
+#: cps/templates/user_edit.html:19
 msgid "Language"
 msgstr "l4ngu4g3"
 
-#: cps/templates/user_edit.html:33
+#: cps/templates/user_edit.html:24
 msgid "Select a language"
 msgstr "s3L3ct @ l4ngu4g3"
 
-#: cps/templates/user_edit.html:41
+#: cps/templates/user_edit.html:32
+msgid "Show books with language"
+msgstr "sh0w b00kz w1th l4ngu4g3"
+
+#: cps/templates/user_edit.html:37
+msgid "Show all"
+msgstr "sh0w 4LL"
+
+#: cps/templates/user_edit.html:44
+msgid "Random books"
+msgstr "r4nd0m b00kz"
+
+#: cps/templates/user_edit.html:45
+msgid "Show random books"
+msgstr "sh0w r4nd0m b00kz"
+
+#: cps/templates/user_edit.html:50
+msgid "is admin"
+msgstr "b 4dm1n"
+
+#: cps/templates/user_edit.html:53
+msgid "nickname"
+msgstr "n1ckn4m3"
+
+#: cps/templates/user_edit.html:58
 msgid "Delete this user"
 msgstr "d3L3t3 d1z us3r"
 
-#: cps/templates/user_edit.html:45
+#: cps/templates/user_edit.html:62
 msgid "Save User"
 msgstr "s4v3 us3r"
 
-#: cps/templates/user_edit.html:49
+#: cps/templates/user_edit.html:66
 msgid "Recent Downloads"
 msgstr "r3c3nt d0wnL04dz"
 

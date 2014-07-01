@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-07-01 12:38+0200\n"
-"PO-Revision-Date: 2014-07-01 12:39+0100\n"
+"POT-Creation-Date: 2014-07-01 23:27+0200\n"
+"PO-Revision-Date: 2014-07-01 23:29+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -19,122 +19,122 @@ msgstr ""
 "Language: de\n"
 "X-Generator: Poedit 1.6.5\n"
 
-#: cps/web.py:191
+#: cps/web.py:147
 msgid "Latest Books"
 msgstr "Neuste Bücher"
 
-#: cps/web.py:211 cps/templates/layout.html:82
+#: cps/web.py:165 cps/templates/layout.html:82
 msgid "Hot Books"
 msgstr "Beliebte Bücher"
 
-#: cps/web.py:216
+#: cps/web.py:170
 msgid "Statistics"
 msgstr "Statisktiken"
 
-#: cps/web.py:227
+#: cps/web.py:181
 msgid "Random Books"
 msgstr "Zufällige Bücher"
 
-#: cps/web.py:237
+#: cps/web.py:191
 msgid "Available languages"
 msgstr "Verfügbare Sprachen"
 
-#: cps/web.py:245
+#: cps/web.py:203
 #, python-format
 msgid "Language: %(name)s"
 msgstr "Sprache: %(name)s"
 
-#: cps/web.py:255
+#: cps/web.py:213
 msgid "Category list"
 msgstr "Kategorie Übersicht"
 
-#: cps/web.py:264
+#: cps/web.py:226
 #, python-format
 msgid "Category: %(name)s"
 msgstr "Kategorie: %(name)s"
 
-#: cps/web.py:270
+#: cps/web.py:236
 #, python-format
 msgid "Series: %(name)s"
 msgstr "Serie: %(name)s"
 
-#: cps/web.py:291
+#: cps/web.py:256
 msgid "Author list"
 msgstr "Autoren Übersicht"
 
-#: cps/web.py:297
+#: cps/web.py:266
 #, python-format
 msgid "Author: %(name)s"
 msgstr "Autor: '%(name)s'"
 
-#: cps/web.py:326
+#: cps/web.py:295
 msgid "Read a Book"
 msgstr "Buch lesen"
 
-#: cps/web.py:355
+#: cps/web.py:324
 #, python-format
 msgid "you are now logged in as: '%(username)s'"
 msgstr "Du bist nun als  '%(username)s' angemeldet"
 
-#: cps/web.py:358
+#: cps/web.py:327
 msgid "Wrong Username or Password"
 msgstr "Falscher Benutzername und/oder Passwort"
 
-#: cps/web.py:376
+#: cps/web.py:345
 #, python-format
 msgid "mail successfully send to %(usermail)s"
 msgstr "E-Mail wurde an %(usermail)s gesendet"
 
-#: cps/web.py:379
+#: cps/web.py:348
 msgid "there was an error sending this book"
 msgstr "Beim senden dieses Buches ist ein Fehler aufgetreten"
 
-#: cps/web.py:381
+#: cps/web.py:350
 msgid "please set a kindle mail first..."
 msgstr "Bitte zuerst eine Kindle E-Mail angeben"
 
-#: cps/web.py:389
+#: cps/web.py:358
 #, python-format
 msgid "Sorry you are not allowed to add a book to the the shelf: %(name)s"
 msgstr "Du hast keine Berechtigung etwas zum Regal %(name)s hinzuzufügen"
 
-#: cps/web.py:411
+#: cps/web.py:380
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "Shelf %(title)s angelegt"
 
-#: cps/web.py:413
+#: cps/web.py:382
 msgid "there was an error"
 msgstr "Es gab einen Fehler"
 
-#: cps/web.py:414 cps/web.py:416
+#: cps/web.py:383 cps/web.py:385
 msgid "create a shelf"
 msgstr "Regal erstellen"
 
-#: cps/web.py:433
+#: cps/web.py:402
 #, python-format
 msgid "successfully deleted shelf %(name)s"
 msgstr "Regal %(name)s wurde gelöscht"
 
-#: cps/web.py:447
+#: cps/web.py:416
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Regal: '%(name)s'"
 
-#: cps/web.py:468
+#: cps/web.py:443
 #, python-format
 msgid "%(username)s's profile"
 msgstr "%(username)s's Profil"
 
-#: cps/web.py:474 cps/web.py:496
+#: cps/web.py:451 cps/web.py:477
 msgid "User list"
 msgstr "Benutzer auflisten"
 
-#: cps/web.py:493
+#: cps/web.py:474
 msgid "User created"
 msgstr "Benutzer angelegt"
 
-#: cps/web.py:518
+#: cps/web.py:506
 #, python-format
 msgid "Edit User %(username)s"
 msgstr "Benutzer bearbeiten: %(username)s"
@@ -211,7 +211,7 @@ msgstr "Buch nach dem bearbeiten ansehen"
 msgid "Save Changes"
 msgstr "Änderungen speichern"
 
-#: cps/templates/index.html:4
+#: cps/templates/index.html:5
 msgid "Discover (Random Books)"
 msgstr "Entdecke zufällige Bücher"
 
@@ -227,7 +227,7 @@ msgstr "Navigation anzeigen"
 msgid "Submit"
 msgstr "Suchen"
 
-#: cps/templates/layout.html:48 cps/templates/user_edit.html:20
+#: cps/templates/layout.html:48 cps/templates/user_edit.html:49
 msgid "Admin"
 msgstr "Admin"
 
@@ -324,31 +324,47 @@ msgstr "E-Mail"
 msgid "Kindle E-Mail"
 msgstr "Kindle E-Mail"
 
-#: cps/templates/user_edit.html:21
-msgid "is admin"
-msgstr "Admin Benutzer"
-
-#: cps/templates/user_edit.html:24
-msgid "nickname"
-msgstr "Spitzname"
-
-#: cps/templates/user_edit.html:28
+#: cps/templates/user_edit.html:19
 msgid "Language"
 msgstr "Sprache"
 
-#: cps/templates/user_edit.html:33
+#: cps/templates/user_edit.html:24
 msgid "Select a language"
 msgstr "Sprache Auswählen"
 
-#: cps/templates/user_edit.html:41
+#: cps/templates/user_edit.html:32
+msgid "Show books with language"
+msgstr "Zeige nur Bücher der Sprache"
+
+#: cps/templates/user_edit.html:37
+msgid "Show all"
+msgstr "Alle Sprachen"
+
+#: cps/templates/user_edit.html:44
+msgid "Random books"
+msgstr "Zufällige Bücher"
+
+#: cps/templates/user_edit.html:45
+msgid "Show random books"
+msgstr "Zufällige Bücher anzeigen?"
+
+#: cps/templates/user_edit.html:50
+msgid "is admin"
+msgstr "Admin Benutzer"
+
+#: cps/templates/user_edit.html:53
+msgid "nickname"
+msgstr "Spitzname"
+
+#: cps/templates/user_edit.html:58
 msgid "Delete this user"
 msgstr "Diesen Benutzer löschen"
 
-#: cps/templates/user_edit.html:45
+#: cps/templates/user_edit.html:62
 msgid "Save User"
 msgstr "Benutzer Speichern"
 
-#: cps/templates/user_edit.html:49
+#: cps/templates/user_edit.html:66
 msgid "Recent Downloads"
 msgstr "Zuletzt Heruntergeladen"
 

@@ -1,0 +1,358 @@
+# Lithuanian translations for PROJECT.
+# Copyright (C) 2014 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2014-07-01 12:38+0200\n"
+"PO-Revision-Date: 2014-07-01 12:53+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: lt <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
+"%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 1.3\n"
+"Language: lt\n"
+"X-Generator: Poedit 1.6.5\n"
+
+#: cps/web.py:191
+msgid "Latest Books"
+msgstr "l4t35t b00kz"
+
+#: cps/web.py:211 cps/templates/layout.html:82
+msgid "Hot Books"
+msgstr "h4wt b00kz"
+
+#: cps/web.py:216
+msgid "Statistics"
+msgstr "st4t!5t!cz"
+
+#: cps/web.py:227
+msgid "Random Books"
+msgstr "r4nd0m b00kz"
+
+#: cps/web.py:237
+msgid "Available languages"
+msgstr "4v41L4bL3 l4ngu4g3z"
+
+#: cps/web.py:245
+#, python-format
+msgid "Language: %(name)s"
+msgstr "l4ngu4g3 : %(name)s"
+
+#: cps/web.py:255
+msgid "Category list"
+msgstr "c4t3g0ry l1st"
+
+#: cps/web.py:264
+#, python-format
+msgid "Category: %(name)s"
+msgstr "c4t3g0ry : %(name)s"
+
+#: cps/web.py:270
+#, python-format
+msgid "Series: %(name)s"
+msgstr "s3r13z: %(name)s"
+
+#: cps/web.py:291
+msgid "Author list"
+msgstr "4uth0r l1st"
+
+#: cps/web.py:297
+#, python-format
+msgid "Author: %(name)s"
+msgstr "4uth0r: %(name)s"
+
+#: cps/web.py:326
+msgid "Read a Book"
+msgstr "r34d @ B00k"
+
+#: cps/web.py:355
+#, python-format
+msgid "you are now logged in as: '%(username)s'"
+msgstr "j00 1z n0w l0gg3d 1n 4z: '%(username)s'"
+
+#: cps/web.py:358
+msgid "Wrong Username or Password"
+msgstr "wr0ng us3rn4m3 0r p4ssw0rd"
+
+#: cps/web.py:376
+#, python-format
+msgid "mail successfully send to %(usermail)s"
+msgstr "m41L succ3ssfuLLy s3nd 2 %(usermail)s"
+
+#: cps/web.py:379
+msgid "there was an error sending this book"
+msgstr "th3r3 wuz n 3rr0r s3nd1n' d1z b00k"
+
+#: cps/web.py:381
+msgid "please set a kindle mail first..."
+msgstr "pL34s3 s3t @ k1ndL3 m41L f1rst..."
+
+#: cps/web.py:389
+#, python-format
+msgid "Sorry you are not allowed to add a book to the the shelf: %(name)s"
+msgstr "bumm3d 0ut j00 1z n0t 4LL0w3d 2 4dd @ b00k 2 t3h t3h sh3Lf: %(name)s"
+
+#: cps/web.py:411
+#, python-format
+msgid "Shelf %(title)s created"
+msgstr "sSh3Lf %(title)s cr34t3d"
+
+#: cps/web.py:413
+msgid "there was an error"
+msgstr "th3r3 wuz n 3rr0r"
+
+#: cps/web.py:414 cps/web.py:416
+msgid "create a shelf"
+msgstr "cr34t3 @ sh3Lf"
+
+#: cps/web.py:433
+#, python-format
+msgid "successfully deleted shelf %(name)s"
+msgstr "succ3ssfuLLy d3L3t3d sh3Lf %(name)s"
+
+#: cps/web.py:447
+#, python-format
+msgid "Shelf: '%(name)s'"
+msgstr "sh3Lf: '%(name)s'"
+
+#: cps/web.py:468
+#, python-format
+msgid "%(username)s's profile"
+msgstr "%(username)s's pr0f1L3"
+
+#: cps/web.py:474 cps/web.py:496
+msgid "User list"
+msgstr "us3r l1st"
+
+#: cps/web.py:493
+msgid "User created"
+msgstr "us3r cr34t3d"
+
+#: cps/web.py:518
+#, python-format
+msgid "Edit User %(username)s"
+msgstr "3d1t us3r %(username)s"
+
+#: cps/templates/detail.html:30
+msgid "Book"
+msgstr "b00k"
+
+#: cps/templates/detail.html:42
+msgid "Description:"
+msgstr "d3scr1pt10n:"
+
+#: cps/templates/detail.html:54
+msgid "add this book to a shelf "
+msgstr "4dd d1z b00k 2 @ sh3Lf "
+
+#: cps/templates/detail.html:69
+msgid "Send ebook to kindle "
+msgstr "s3nd 3b00k 2 k1ndL3 "
+
+#: cps/templates/detail.html:84
+msgid "download this ebook"
+msgstr "d0wnL04d d1z 3b00k"
+
+#: cps/templates/detail.html:94
+msgid "read this book online"
+msgstr "r34d d1z b00k 0nL1n3"
+
+#: cps/templates/detail.html:97
+msgid "Edit book"
+msgstr "3d1t b00k"
+
+#: cps/templates/detail.html:98
+msgid "Delete book"
+msgstr "d3L3t3 b00k"
+
+#: cps/templates/edit_book.html:14
+msgid "Book Title"
+msgstr "b00k t1tL3"
+
+#: cps/templates/edit_book.html:18
+msgid "Author"
+msgstr "4uth0r"
+
+#: cps/templates/edit_book.html:27
+msgid "Description"
+msgstr "d3scr1pt10n"
+
+#: cps/templates/edit_book.html:31
+msgid "Tags"
+msgstr "t4gz"
+
+#: cps/templates/edit_book.html:36
+msgid "Series"
+msgstr "s3r13z"
+
+#: cps/templates/edit_book.html:40
+msgid "Series id"
+msgstr "s3r13z 1d"
+
+#: cps/templates/edit_book.html:44
+msgid "Rating"
+msgstr "r4t1n'"
+
+#: cps/templates/edit_book.html:48
+msgid "Cover URL (jpg)"
+msgstr "c0v3r URL (jpg)"
+
+#: cps/templates/edit_book.html:53
+msgid "view book after edit"
+msgstr "v13w b00k 4ft3r 3d1t"
+
+#: cps/templates/edit_book.html:56
+msgid "Save Changes"
+msgstr "s4v3 ch4ng3z"
+
+#: cps/templates/index.html:4
+msgid "Discover (Random Books)"
+msgstr "d1sc0v3r (r4nd0m b00kz)"
+
+#: cps/templates/layout.html:4 cps/templates/layout.html:32
+msgid "library"
+msgstr "l1br4ry"
+
+#: cps/templates/layout.html:27
+msgid "Toggle navigation"
+msgstr "t0ggL3 n4v1g4t10n"
+
+#: cps/templates/layout.html:41
+msgid "Submit"
+msgstr "subm1t"
+
+#: cps/templates/layout.html:48 cps/templates/user_edit.html:20
+msgid "Admin"
+msgstr "4dm1n"
+
+#: cps/templates/layout.html:51
+msgid "Logout"
+msgstr "l0g0ut"
+
+#: cps/templates/layout.html:53 cps/templates/login.html:4
+#: cps/templates/login.html:19
+msgid "Login"
+msgstr "l0g1n"
+
+#: cps/templates/layout.html:81
+msgid "Browse"
+msgstr "br0ws3"
+
+#: cps/templates/layout.html:83
+msgid "New Books"
+msgstr "n3w b00kz"
+
+#: cps/templates/layout.html:84
+msgid "Discover"
+msgstr "d1sc0v3r"
+
+#: cps/templates/layout.html:85
+msgid "Categorys"
+msgstr "c4t3g0ryz"
+
+#: cps/templates/layout.html:86
+msgid "Authors"
+msgstr "4uth0rz"
+
+#: cps/templates/layout.html:87
+msgid "Languages"
+msgstr "l4ngu4g3z"
+
+#: cps/templates/layout.html:91
+msgid "Public Shelves"
+msgstr "pubL1c sh3Lv3z"
+
+#: cps/templates/layout.html:96
+msgid "Your Shelves"
+msgstr "y0 sh3Lv3z"
+
+#: cps/templates/layout.html:102
+msgid "Create a Shelf"
+msgstr "cr34t3 @ sh3Lf"
+
+#: cps/templates/login.html:7
+msgid "Username"
+msgstr "us3rn4m3"
+
+#: cps/templates/login.html:11 cps/templates/user_edit.html:11
+msgid "Password"
+msgstr "p4ssw0rd"
+
+#: cps/templates/login.html:16
+msgid "Remember me"
+msgstr "r3m3mb3r m3"
+
+#: cps/templates/search.html:6
+msgid "No Results for:"
+msgstr "n0 r3suLtz 4:"
+
+#: cps/templates/search.html:7
+msgid "Please try a diffrent Search"
+msgstr "pL34s3 try @ d1ffr3nt s34rch"
+
+#: cps/templates/search.html:9
+msgid "Results for:"
+msgstr "r3suLtz 4:"
+
+#: cps/templates/shelf.html:5
+msgid "Delete this Shelf"
+msgstr "d3L3t3 d1z sSh3Lf"
+
+#: cps/templates/shelf_edit.html:7
+msgid "Shelf Title"
+msgstr "sh3Lf t1tL3"
+
+#: cps/templates/shelf_edit.html:12
+msgid "should the shelf be public?"
+msgstr "sh0uLd t3h sh3Lf b pubL1c?"
+
+#: cps/templates/shelf_edit.html:15
+msgid "Create Shelf"
+msgstr "cr34t3 sh3Lf"
+
+#: cps/templates/user_edit.html:7
+msgid "E-Mail"
+msgstr "3-M41L"
+
+#: cps/templates/user_edit.html:15
+msgid "Kindle E-Mail"
+msgstr "k1ndL3 3-M41L"
+
+#: cps/templates/user_edit.html:21
+msgid "is admin"
+msgstr "b 4dm1n"
+
+#: cps/templates/user_edit.html:24
+msgid "nickname"
+msgstr "n1ckn4m3"
+
+#: cps/templates/user_edit.html:28
+msgid "Language"
+msgstr "l4ngu4g3"
+
+#: cps/templates/user_edit.html:33
+msgid "Select a language"
+msgstr "s3L3ct @ l4ngu4g3"
+
+#: cps/templates/user_edit.html:41
+msgid "Delete this user"
+msgstr "d3L3t3 d1z us3r"
+
+#: cps/templates/user_edit.html:45
+msgid "Save User"
+msgstr "s4v3 us3r"
+
+#: cps/templates/user_edit.html:49
+msgid "Recent Downloads"
+msgstr "r3c3nt d0wnL04dz"
+
+#: cps/templates/user_list.html:6
+msgid "create new user"
+msgstr "cr34t3 n3w us3r"

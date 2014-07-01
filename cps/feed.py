@@ -51,10 +51,9 @@ def http_auth_required(f):
 @feed.route("/")
 @http_auth_required
 def feed_index():
-    print request.headers
-    print request.__dict__
-    xml = render_template('index.xml')
-    response= make_response(xml)
+    last_update = db.session.query(db.Books).order_by(db.Books.last_modified.desc()).first()
+    xml = render_template('index.xml', last_modified=last_update.last_modified)
+    response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
 
@@ -94,6 +93,28 @@ def feed_new():
     response.headers["Content-Type"] = "application/xml"
     return response
 
+@feed.route('/language')
+@http_auth_required
+def language():
+    languages = db.session.query(db.Languages).all()
+
+    for lang in languages:
+        cur_l = LC.parse(lang.lang_code)
+        lang.name = cur_l.get_language_name("en")
+
+    xml = render_template('language.xml', languages=languages)
+    response= make_response(xml)
+    response.headers["Content-Type"] = "application/xml"
+    return response
+
+@feed.route('/language/<name>')
+@http_auth_required
+def language_name(name):
+    entries = db.session.query(db.Books).filter(db.Books.languages.any(db.Languages.lang_code == name )).order_by(db.Books.last_modified.desc()).all()
+    xml = render_template('feed.xml', entries=entries)
+    response= make_response(xml)
+    response.headers["Content-Type"] = "application/xml"
+    return response
 
 @feed.route("/discover")
 @http_auth_required

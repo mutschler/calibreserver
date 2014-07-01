@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>urn:uuid:2853dacf-ed79-42f5-8e8a-a7bb3d1ae6a2</id>
+  <link rel="self"
+        href="{{url_for('.feed_index')}}"
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="start"
+        href="{{url_for('.feed_index')}}"
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="related"
+        href="{{url_for('.feed_index')}}"
+        type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+  <link rel="up"
+        href="{{url_for('.feed_index')}}"
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="search"
+        href="{{url_for('.feed_osd')}}"
+        type="application/opensearchdescription+xml"/>
+  <title>library</title>
+  <updated>2010-01-10T10:03:10Z</updated>
+  <author>
+    <name>cytec</name>
+    <uri>http://opds-spec.org</uri>
+  </author>
+
+  {% for language in languages %}
+
+  <entry>
+    <title>{{language.name}}</title>
+    <link rel="http://opds-spec.org/sort/popular"
+          href="{{url_for('.language_name', name=language.lang_code)}}"
+          type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+    <updated>{{last_modified}}</updated>
+    <id>urn:uuid:d49e8018-a0e0-499e-9423-7c175fa0c56e</id>
+    <content type="text">All Books written in {{language.name}}</content>
+  </entry>
+  {% endfor %}
+</feed>

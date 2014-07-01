@@ -17,7 +17,7 @@
         href="{{url_for('.feed_osd')}}"
         type="application/opensearchdescription+xml"/>
   <title>library</title>
-  <updated>2010-01-10T10:03:10Z</updated>
+  <updated>{{last_modified}}</updated>
   <author>
     <name>Spec Writer</name>
     <uri>http://opds-spec.org</uri>
@@ -29,7 +29,7 @@
     <link rel="http://opds-spec.org/sort/popular"
           href="{{url_for('.feed_hot')}}"
           type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
-    <updated>2010-01-10T10:01:01Z</updated>
+    <updated>{{last_modified}}</updated>
     <id>urn:uuid:d49e8018-a0e0-499e-9423-7c175fa0c56e</id>
     <content type="text">Popular publications from this catalog based on Rating.</content>
   </entry>
@@ -39,9 +39,19 @@
     <link rel="http://opds-spec.org/sort/popular"
           href="{{url_for('.feed_new')}}"
           type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
-    <updated>2010-01-10T10:01:01Z</updated>
+    <updated>{{last_modified}}</updated>
     <id>urn:uuid:d49e8018-a0e0-499e-9423-7c175fa0c56e</id>
     <content type="text">The latest Books</content>
+  </entry>
+
+  <entry>
+    <title>Language</title>
+    <link rel="http://opds-spec.org/sort/popular"
+          href="{{url_for('.language')}}"
+          type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+    <updated>{{last_modified}}</updated>
+    <id>urn:uuid:d49e8018-a0e0-499e-9423-7c175fa0c56e</id>
+    <content type="text">Books ordered by Language</content>
   </entry>
 
   <entry>
@@ -49,7 +59,7 @@
     <link rel="http://opds-spec.org/sort/random"
           href="{{url_for('.feed_discover')}}"
           type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
-    <updated>2010-01-10T10:01:01Z</updated>
+    <updated>{{last_modified}}</updated>
     <id>urn:uuid:d49e8018-a0e0-499e-9423-7c175fa0c56e</id>
     <content type="text">Show Random Books</content>
   </entry>

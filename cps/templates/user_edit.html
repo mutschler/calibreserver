@@ -15,15 +15,6 @@
       <label for="kindle_mail">{{_('Kindle E-Mail')}}</label>
       <input type="text" class="form-control" name="kindle_mail" id="kindle_mail"  placeholder="mail@kindle.com" {% if content.kindle_mail %}value="{{content.kindle_mail}}"{% endif %}>
     </div>
-    {% if g.user and g.user.role %}
-    <div class="form-group">
-      <label for="user_role">{{_('Admin')}}</label>
-      <input type="checkbox" name="user_role" {% if content.role %}checked{% endif %}> {{_('is admin')}}
-    </div>
-    <div class="form-group">
-      <label for="nickname">{{_('nickname')}}</label>
-      <input type="text" class="form-control" name="nickname" id="nickname" value="{{content.nickname}}">
-    </div>
     <div class="form-group">
       <label for="locale">{{_('Language')}}</label>
         <select name="locale" id="locale" class="form-control">
@@ -36,6 +27,15 @@
             <option value="en">en</option>
             <option value="lt">1337 (en)</option>
         </select>
+    </div>
+    {% if g.user and g.user.role %}
+    <div class="form-group">
+      <label for="user_role">{{_('Admin')}}</label>
+      <input type="checkbox" name="user_role" {% if content.role %}checked{% endif %}> {{_('is admin')}}
+    </div>
+    <div class="form-group">
+      <label for="nickname">{{_('nickname')}}</label>
+      <input type="text" class="form-control" name="nickname" id="nickname" value="{{content.nickname}}">
     </div>
     <div class="checkbox">
       <label>

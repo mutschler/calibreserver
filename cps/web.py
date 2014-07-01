@@ -462,7 +462,7 @@ def profile():
             content.password = generate_password_hash(to_save["password"])
         if to_save["kindle_mail"] and to_save["kindle_mail"] != content.kindle_mail:
             content.kindle_mail = to_save["kindle_mail"]
-        if to_save["user_role"] and to_save["user_role"] == "on":
+        if "user_role" in to_save and to_save["user_role"] == "on":
             content.role = 1
         if to_save["locale"]:
             content.locale = to_save["locale"]
@@ -472,40 +472,49 @@ def profile():
 @app.route("/admin/user")
 @login_required
 def user_list():
+    if current_user.role != ub.ROLE_ADMIN:
+        return redirect(url_for('index'))
     content = ub.session.query(ub.User).all()
     return render_template("user_list.html", content=content, title=_("User list"))
 
 @app.route("/admin/user/new", methods = ["GET", "POST"])
 @login_required
 def new_user():
+    if current_user.role != ub.ROLE_ADMIN:
+        return redirect(url_for('index'))
     content = ub.User()
     if request.method == "POST":
         to_save = request.form.to_dict()
         content.password = generate_password_hash(to_save["password"])
         content.nickname = to_save["nickname"]
         content.email = to_save["email"]
+        content.kindle_mail = to_save["kindle_mail"]
+        content.locale = to_save["locale"]
+
         if "user_role" in to_save:
             content.role = 1
         else:
             content.role = 0
-
         try:
             ub.session.add(content)
             ub.session.commit()
             flash(_("User created"), category="success")
-        except (e):
+        except Exception as e:
             flash(e, category="error")
     return render_template("user_edit.html", content=content, title=_("User list"))
 
 @app.route("/admin/user/<int:user_id>", methods = ["GET", "POST"])
 @login_required
 def edit_user(user_id):
+    if current_user.role != ub.ROLE_ADMIN:
+        return redirect(url_for('index'))
     content = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
     downloads = list()
     for book in content.downloads.order_by(ub.Downloads.time.desc()).all():
         downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
     if request.method == "POST":
         to_save = request.form.to_dict()
+        print to_save
         if "delete" in to_save:
             ub.session.delete(content)
             return redirect(url_for('user_list'))
@@ -516,12 +525,18 @@ def edit_user(user_id):
                 content.role = 1
             else:
                 content.role = 0
+
+            content.kindle_mail = to_save["kindle_mail"]
+            content.locale = to_save["locale"]
         ub.session.commit()
+        print content.password
     return render_template("user_edit.html", content=content, downloads=downloads, title=_("Edit User %(username)s" , username=current_user.nickname))
 
 @app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
 @login_required
 def edit_book(book_id):
+    if current_user.role != ub.ROLE_ADMIN:
+        return redirect(url_for('index'))
     ## create the function for sorting...
     db.session.connection().connection.connection.create_function("title_sort",1,db.title_sort)
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()

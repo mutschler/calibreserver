@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-06-30 18:51+0200\n"
-"PO-Revision-Date: 2014-06-30 18:52+0100\n"
+"POT-Creation-Date: 2014-07-01 00:48+0200\n"
+"PO-Revision-Date: 2014-07-01 00:49+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -116,20 +116,20 @@ msgstr "Regal erstellen"
 msgid "Shelf: '%(name)s'"
 msgstr "Regal: '%(name)s'"
 
-#: cps/web.py:449
+#: cps/web.py:451
 #, python-format
 msgid "%(username)s's profile"
 msgstr "%(username)s's Profil"
 
-#: cps/web.py:455 cps/web.py:477
+#: cps/web.py:457 cps/web.py:479
 msgid "User list"
 msgstr "Benutzer auflisten"
 
-#: cps/web.py:474
+#: cps/web.py:476
 msgid "User created"
 msgstr "Benutzer angelegt"
 
-#: cps/web.py:499
+#: cps/web.py:501
 #, python-format
 msgid "Edit User %(username)s"
 msgstr "Benutzer bearbeiten: %(username)s"
@@ -323,15 +323,23 @@ msgstr "Admin Benutzer"
 msgid "nickname"
 msgstr "Spitzname"
 
-#: cps/templates/user_edit.html:29
+#: cps/templates/user_edit.html:28
+msgid "Language"
+msgstr "Sprache"
+
+#: cps/templates/user_edit.html:33
+msgid "Select a language"
+msgstr "Sprache Auswählen"
+
+#: cps/templates/user_edit.html:41
 msgid "Delete this user"
 msgstr "Diesen Benutzer löschen"
 
-#: cps/templates/user_edit.html:33
+#: cps/templates/user_edit.html:45
 msgid "Save User"
 msgstr "Benutzer Speichern"
 
-#: cps/templates/user_edit.html:37
+#: cps/templates/user_edit.html:49
 msgid "Recent Downloads"
 msgstr "Zuletzt Heruntergeladen"
 

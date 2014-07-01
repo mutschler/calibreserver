@@ -7,17 +7,20 @@ base_path = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.join(base_path, 'lib'))
 
 from cps import web
-from cps import config
+from cps import config, helper
 from tornado.wsgi import WSGIContainer
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
-
+from time import sleep
 global title_sort
 
 def title_sort(title):
     return title
+
+helper.update_db()
+
 if config.DEVELOPMENT:
-    web.app.run(host="0.0.0.0",port=config.PORT, debug=True)
+    web.app.run(host="0.0.0.0", port=config.PORT, debug=True)
 else:
     http_server = HTTPServer(WSGIContainer(web.app))
     http_server.listen(config.PORT)

@@ -17,6 +17,9 @@ from email.MIMEText import MIMEText
 from email.generator import Generator
 import subprocess
 
+from alembic.config import Config
+from alembic import command
+
 def update_download(book_id, user_id):
     check = ub.session.query(ub.Downloads).filter(ub.Downloads.user_id == user_id).filter(ub.Downloads.book_id == book_id).first()
 
@@ -125,3 +128,18 @@ def get_attachment(file_path):
         message = ('The requested file could not be read. Maybe wrong '
                    'permissions?')
         return None
+
+def update_db():
+    if os.path.exists("{0}/app.db".format(config.MAIN_DIR)):
+        alembic_cfg = Config("{0}/alembic.ini".format(config.MAIN_DIR))
+        alembic_cfg.set_main_option(
+            "sqlalchemy.url", "sqlite:///{0}/app.db".format(config.MAIN_DIR))
+        alembic_cfg.set_main_option(
+            "script_location", "{0}/alembic".format(config.MAIN_DIR))
+
+        try:
+            command.upgrade(alembic_cfg, "head")
+            #debug(u"running database update...")
+        except:
+            #debug(u"database is up to date")
+            pass

@@ -32,13 +32,13 @@ babel = Babel(app)
 @babel.localeselector
 def get_locale():
     # if a user is logged in, use the locale from the user settings
-    # user = getattr(g, 'user', None)
-    # if user is not None:
-    #     return user.locale
+    user = getattr(g, 'user', None)
+    if user is not None and hasattr(user, "locale"):
+         return user.locale
     # otherwise try to guess the language from the user accept
     # header the browser transmits.  We support de/fr/en in this
     # example.  The best match wins.
-    return request.accept_languages.best_match(['de', 'en'])
+    return request.accept_languages.best_match(['de', "en"])
 
 @babel.timezoneselector
 def get_timezone():
@@ -443,8 +443,10 @@ def profile():
             content.password = generate_password_hash(to_save["password"])
         if to_save["kindle_mail"] and to_save["kindle_mail"] != content.kindle_mail:
             content.kindle_mail = to_save["kindle_mail"]
-        if to_save["user_role"]:
-            content.role = int(to_save["user_role"])
+        if to_save["user_role"] and to_save["user_role"] == "on":
+            content.role = 1
+        if to_save["locale"]:
+            content.locale = to_save["locale"]
         ub.session.commit()
     return render_template("user_edit.html", content=content, downloads=downloads, title=_("%(username)s's profile", username=current_user.nickname))
 

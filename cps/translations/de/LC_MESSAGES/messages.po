@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-07-01 00:48+0200\n"
-"PO-Revision-Date: 2014-07-01 00:49+0100\n"
+"POT-Creation-Date: 2014-07-01 12:38+0200\n"
+"PO-Revision-Date: 2014-07-01 12:39+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -111,25 +111,30 @@ msgstr "Es gab einen Fehler"
 msgid "create a shelf"
 msgstr "Regal erstellen"
 
-#: cps/web.py:430
+#: cps/web.py:433
+#, python-format
+msgid "successfully deleted shelf %(name)s"
+msgstr "Regal %(name)s wurde gelöscht"
+
+#: cps/web.py:447
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Regal: '%(name)s'"
 
-#: cps/web.py:451
+#: cps/web.py:468
 #, python-format
 msgid "%(username)s's profile"
 msgstr "%(username)s's Profil"
 
-#: cps/web.py:457 cps/web.py:479
+#: cps/web.py:474 cps/web.py:496
 msgid "User list"
 msgstr "Benutzer auflisten"
 
-#: cps/web.py:476
+#: cps/web.py:493
 msgid "User created"
 msgstr "Benutzer angelegt"
 
-#: cps/web.py:501
+#: cps/web.py:518
 #, python-format
 msgid "Edit User %(username)s"
 msgstr "Benutzer bearbeiten: %(username)s"
@@ -294,6 +299,10 @@ msgstr "Bitte versuch einen anderen Suchbegriff"
 #: cps/templates/search.html:9
 msgid "Results for:"
 msgstr "Ergebnisse für:"
+
+#: cps/templates/shelf.html:5
+msgid "Delete this Shelf"
+msgstr "Dieses Regal löschen"
 
 #: cps/templates/shelf_edit.html:7
 msgid "Shelf Title"

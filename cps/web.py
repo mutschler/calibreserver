@@ -415,6 +415,23 @@ def create_shelf():
     else:
         return render_template('shelf_edit.html', title=_("create a shelf"))
 
+@app.route("/shelf/delete/<int:shelf_id>")
+@login_required
+def delete_shelf(shelf_id):
+    cur_shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
+    deleted = 0
+    if current_user.role == ub.ROLE_ADMIN:
+        deleted = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).delete()
+
+    else:
+        deleted = ub.session.query(ub.Shelf).filter(ub.or_(ub.and_(ub.Shelf.user_id == int(current_user.id), ub.Shelf.id == shelf_id), ub.and_(ub.Shelf.is_public == 1, ub.Shelf.id == shelf_id))).delete()
+
+    #ub.delete(shelf)
+    if deleted:
+        ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).delete()
+        ub.session.commit()
+        flash( _("successfully deleted shelf %(name)s", name=cur_shelf.name, category="success") )
+    return redirect(url_for('index'))
 
 @app.route("/shelf/<int:shelf_id>")
 @login_required
@@ -427,7 +444,7 @@ def show_shelf(shelf_id):
             cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
             result.append(cur_book)
 
-    return render_template('shelf.html', entries=result, title=_("Shelf: '%(name)s'", name=shelf.name))
+    return render_template('shelf.html', entries=result, title=_("Shelf: '%(name)s'", name=shelf.name), shelf=shelf)
 
 @app.route("/me", methods = ["GET", "POST"])
 @login_required

@@ -15,6 +15,7 @@ from flask.ext.babel import gettext as _
 import requests, zipfile
 from werkzeug.security import generate_password_hash, check_password_hash
 from babel import Locale as LC
+from cps.feed import feed
 
 app = (Flask(__name__))
 
@@ -28,6 +29,7 @@ lm.login_view = 'login'
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 babel = Babel(app)
+app.register_blueprint(feed)
 
 @babel.localeselector
 def get_locale():
@@ -110,73 +112,73 @@ def before_request():
     g.user = current_user
     g.public_shelfes = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1).all()
 
-@app.route("/feed")
-def feed_index():
-    xml = render_template('index.xml')
-    response= make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
-    return response
+# @app.route("/feed")
+# def feed_index():
+#     xml = render_template('index.xml')
+#     response= make_response(xml)
+#     response.headers["Content-Type"] = "application/xml"
+#     return response
 
-@app.route("/feed/osd")
-def feed_osd():
-    xml = render_template('osd.xml')
-    response= make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
-    return response
+# @app.route("/feed/osd")
+# def feed_osd():
+#     xml = render_template('osd.xml')
+#     response= make_response(xml)
+#     response.headers["Content-Type"] = "application/xml"
+#     return response
 
-@app.route("/feed/search", methods=["GET"])
-def feed_search():
-    term = request.args.get("query")
-    if term:
-        random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
-        entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%"+term+"%")),db.Books.authors.any(db.Authors.name.like("%"+term+"%")),db.Books.title.like("%"+term+"%"))).all()
-        xml = render_template('feed.xml', searchterm=term, entries=entries)
-    else:
-        xml = render_template('feed.xml', searchterm="")
-    response= make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
-    return response
+# @app.route("/feed/search", methods=["GET"])
+# def feed_search():
+#     term = request.args.get("query")
+#     if term:
+#         random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
+#         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%"+term+"%")),db.Books.authors.any(db.Authors.name.like("%"+term+"%")),db.Books.title.like("%"+term+"%"))).all()
+#         xml = render_template('feed.xml', searchterm=term, entries=entries)
+#     else:
+#         xml = render_template('feed.xml', searchterm="")
+#     response= make_response(xml)
+#     response.headers["Content-Type"] = "application/xml"
+#     return response
 
-@app.route("/feed/new")
-def feed_new():
-    off = request.args.get("start_index")
-    if off:
-        entries = db.session.query(db.Books).order_by(db.Books.last_modified.desc()).offset(off).limit(config.NEWEST_BOOKS)
-    else:
-        entries = db.session.query(db.Books).order_by(db.Books.last_modified.desc()).limit(config.NEWEST_BOOKS)
-        off = 0
-    xml = render_template('feed.xml', entries=entries, next_url="/feed/new?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
-    response= make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
-    return response
+# @app.route("/feed/new")
+# def feed_new():
+#     off = request.args.get("start_index")
+#     if off:
+#         entries = db.session.query(db.Books).order_by(db.Books.last_modified.desc()).offset(off).limit(config.NEWEST_BOOKS)
+#     else:
+#         entries = db.session.query(db.Books).order_by(db.Books.last_modified.desc()).limit(config.NEWEST_BOOKS)
+#         off = 0
+#     xml = render_template('feed.xml', entries=entries, next_url="/feed/new?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+#     response= make_response(xml)
+#     response.headers["Content-Type"] = "application/xml"
+#     return response
 
 
-@app.route("/feed/discover")
-def feed_discover():
-    off = request.args.get("start_index")
-    if off:
-        entries = db.session.query(db.Books).order_by(func.random()).offset(off).limit(config.NEWEST_BOOKS)
-    else:
-        entries = db.session.query(db.Books).order_by(func.random()).limit(config.NEWEST_BOOKS)
-        off = 0
-    xml = render_template('feed.xml', entries=entries, next_url="/feed/discover?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
-    response= make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
-    return response
+# @app.route("/feed/discover")
+# def feed_discover():
+#     off = request.args.get("start_index")
+#     if off:
+#         entries = db.session.query(db.Books).order_by(func.random()).offset(off).limit(config.NEWEST_BOOKS)
+#     else:
+#         entries = db.session.query(db.Books).order_by(func.random()).limit(config.NEWEST_BOOKS)
+#         off = 0
+#     xml = render_template('feed.xml', entries=entries, next_url="/feed/discover?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+#     response= make_response(xml)
+#     response.headers["Content-Type"] = "application/xml"
+#     return response
 
-@app.route("/feed/hot")
-def feed_hot():
-    off = request.args.get("start_index")
-    if off:
-        entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).offset(off).limit(config.NEWEST_BOOKS)
-    else:
-        entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).limit(config.NEWEST_BOOKS)
-        off = 0
+# @app.route("/feed/hot")
+# def feed_hot():
+#     off = request.args.get("start_index")
+#     if off:
+#         entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).offset(off).limit(config.NEWEST_BOOKS)
+#     else:
+#         entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).limit(config.NEWEST_BOOKS)
+#         off = 0
 
-    xml = render_template('feed.xml', entries=entries, next_url="/feed/hot?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
-    response= make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
-    return response
+#     xml = render_template('feed.xml', entries=entries, next_url="/feed/hot?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+#     response= make_response(xml)
+#     response.headers["Content-Type"] = "application/xml"
+#     return response
 
 @app.route("/", defaults={'page': 1})
 @app.route('/page/<int:page>')

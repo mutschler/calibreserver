@@ -4,18 +4,15 @@
    <LongName>library</LongName>
    <ShortName>library</ShortName>
    <Description>Search the ebook catalog.</Description>
-   <Developer>cytec</Developer>
-   <Contact>iamcytec@googlemail.com</Contact>
+   <Developer>Raphael Mutschler</Developer>
+   <Contact>info@raphaelmutschler.de</Contact>
 
    <Url type="text/html"
         template="{{url_for('search')}}?query={searchTerms}"/>
 
    <Url type="application/atom+xml"
-        template="{{url_for('feed_search')}}?query={searchTerms}"/>
+        template="{{url_for('.feed_search')}}?query={searchTerms}"/>
 
-   <Url type="application/x-suggestions+json"
-  rel="suggestions"
-        template="http://www.gutenberg.org/ebooks/suggest/?query={searchTerms}"/>
 <!--
    <Url type="application/rss+xml"
         template="http://example.com/?q={searchTerms}&amp;pw={startPage?}&amp;format=rss"/>
@@ -27,7 +24,6 @@
    <Query role="example" searchTerms="doyle detective" />
    <Query role="example" searchTerms="love stories" />
 
-   <Attribution>Search Data Copyright 1971-2012, Project Gutenberg, All Rights Reserved.</Attribution>
    <SyndicationRight>open</SyndicationRight>
    <Language>de-DE</Language>
    <OutputEncoding>UTF-8</OutputEncoding>

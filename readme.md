@@ -8,7 +8,7 @@ library ist der versuch einen rein python basierenden eBook Server für alle Ger
 ## Features:
 - Einlesen der Calibre Datenbank
 - HTML Interface
-- OPDS Feed support
+- OPDS Feed support mit HTTP Basic Auth
 - User Management
 - Admin Interface (neue user anlegen/verwalten)
 - Download nur für angemeldete User
@@ -23,8 +23,8 @@ library ist der versuch einen rein python basierenden eBook Server für alle Ger
 1. Alle dateien herunterladen
 2. Tool mit "python cps.py" starten (beendet automatisch)
 3. config.ini bearbeiten (siehe unten)
-4. create_admin.py aufrufen
-5. Tool mit "python cps.py" starten
+4. Tool mit "python cps.py" starten
+5. Im Browser die entsprechende Seite aufrufen und den Admin Account erstellen
 
 ## config.ini
 [General]

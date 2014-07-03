@@ -18,6 +18,7 @@ from babel import Locale as LC
 from cps.feed import feed
 
 app = (Flask(__name__))
+app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 Principal(app)
 
@@ -26,7 +27,7 @@ lm = LoginManager(app)
 lm.init_app(app)
 lm.login_view = 'login'
 
-app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+
 
 babel = Babel(app)
 app.register_blueprint(feed)
@@ -130,9 +131,14 @@ def before_request():
     g.user = current_user
     g.public_shelfes = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1).all()
 
+
 @app.route("/", defaults={'page': 1})
 @app.route('/page/<int:page>')
 def index(page):
+
+    if not helper.check_for_user():
+        return redirect(url_for('setup'))
+
     if current_user.random_books:
         random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
     else:
@@ -563,6 +569,43 @@ def edit_book(book_id):
             return render_template('edit_book.html', book=book)
     else:
         return render_template('edit_book.html', book=book)
+
+@app.route('/setup', methods = ["GET", "POST"])
+def setup():
+
+    if helper.check_for_user():
+        flash( _("There is already an user in your database setup is disabled. Please log in with your admin account"), category="error")
+        return redirect(url_for('index'))
+
+    user = ub.User()
+    user.role = 1
+    user.random_books = 1
+
+    if request.method == "POST":
+        user.random_books = 0
+
+        to_save = request.form.to_dict()
+        user.email = to_save["email"]
+        user.kindle_mail == to_save["kindle_mail"]
+
+        user.nickname = to_save["nickname"]
+
+        if "password" in to_save and to_save["password"] != "":
+            user.password = generate_password_hash(to_save["password"])
+
+        if "locale" in to_save and to_save["locale"] != "":
+            user.locale = to_save["locale"]
+
+        if "show_random" in to_save:
+            user.random_books = 1
+
+        ub.session.merge(user)
+        ub.session.commit()
+        flash( _("Admin user %(username)s created!", username=user.nickname), category="success")
+        return redirect(url_for('index'))
+
+    return render_template('setup.html', content=user, title= _('Setup admin user'))
+
 
 # @app.route('/admin/delete/<int:book_id>')
 # def delete_book(book_id):

@@ -28,7 +28,7 @@ class User(Base):
     shelf = relationship('Shelf', backref='user', lazy='dynamic')
     whislist = relationship('Whislist', backref='user', lazy='dynamic')
     downloads = relationship('Downloads', backref='user', lazy='dynamic')
-    locale = Column(String(2))
+    locale = Column(String(2), default="en")
     random_books = Column(Integer, default=1)
     default_language = Column(String(3), default="all")
 

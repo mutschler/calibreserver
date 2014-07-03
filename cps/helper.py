@@ -20,6 +20,11 @@ import subprocess
 from alembic.config import Config
 from alembic import command
 
+def check_for_user():
+    if ub.session.query(ub.User).filter(ub.User.role == ub.ROLE_ADMIN).first():
+        return True
+    return False
+
 def update_download(book_id, user_id):
     check = ub.session.query(ub.Downloads).filter(ub.Downloads.user_id == user_id).filter(ub.Downloads.book_id == book_id).first()
 

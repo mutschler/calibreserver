@@ -78,13 +78,13 @@ def send_mail(book_id, kindle_mail):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     for format in book.data:
         if format.format == "MOBI":
-            is_mobi = True
+            is_mobi = format
         if format.format == "EPUB":
             is_epub = True
 
 
     if is_mobi:
-        file_path = os.path.join(config.DB_ROOT, book.path, book.name + ".mobi")
+        file_path = os.path.join(config.DB_ROOT, book.path, is_mobi.name + ".mobi")
 
     if is_epub and not is_mobi:
         file_path = make_mobi(book.id)

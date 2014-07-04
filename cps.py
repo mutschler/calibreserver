@@ -11,7 +11,7 @@ from cps import config, helper
 from tornado.wsgi import WSGIContainer
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
-from time import sleep
+
 global title_sort
 
 def title_sort(title):
@@ -20,6 +20,8 @@ def title_sort(title):
 helper.update_db()
 
 if config.DEVELOPMENT:
+    from flask_debugtoolbar import DebugToolbarExtension
+    toolbar = DebugToolbarExtension(web.app)
     web.app.run(host="0.0.0.0", port=config.PORT, debug=True)
 else:
     http_server = HTTPServer(WSGIContainer(web.app))

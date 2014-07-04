@@ -22,20 +22,17 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 if config.DEVELOPMENT:
     from flask_debugtoolbar import DebugToolbarExtension
-
-    toolbar = DebugToolbarExtension(app)
     app.debug = True
+    toolbar = DebugToolbarExtension(app)
 
 Principal(app)
-
 
 lm = LoginManager(app)
 lm.init_app(app)
 lm.login_view = 'login'
 
-
-
 babel = Babel(app)
+
 app.register_blueprint(feed)
 
 class MyAnonymousUser(object):

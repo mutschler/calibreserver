@@ -61,7 +61,8 @@ MAIL_FROM = check_setting_str(CFG, 'Mail', 'MAIL_FROM', "library automailer <mai
 
 CheckSection('Advanced')
 TITLE_REGEX = check_setting_str(CFG, 'Advanced', 'TITLE_REGEX', '^(Der|Die|Das|Ein|Eine)\s+')
-DEVELOPMENT = bool(check_setting_int(CFG, 'Advanced', 'DEVELOPMENT', 1))
+DEVELOPMENT = bool(check_setting_int(CFG, 'Advanced', 'DEVELOPMENT', 0))
+AUTO_MIGRATE = bool(check_setting_int(CFG, 'Advanced', 'AUTO_MIGRATE', 1))
 FIRST_RUN = bool(check_setting_int(CFG, 'Advanced', 'FIRST_RUN', 1))
 
 SYS_ENCODING="UTF-8"
@@ -82,6 +83,7 @@ configval["MAIL_PASSWORD"] = MAIL_PASSWORD
 configval["TITLE_REGEX"] = TITLE_REGEX
 configval["FIRST_RUN"] = FIRST_RUN
 configval["USE_DL_PASS"] = USE_DL_PASS
+configval["AUTO_MIGRATE"] = AUTO_MIGRATE
 
 def save_config(configval):
     new_config = ConfigObj()
@@ -103,6 +105,7 @@ def save_config(configval):
     new_config['Advanced'] = {}
     new_config['Advanced']['TITLE_REGEX'] = configval["TITLE_REGEX"]
     new_config['Advanced']['DEVELOPMENT'] = int(configval["DEVELOPMENT"])
+    new_config['Advanced']['AUTO_MIGRATE'] = int(configval["AUTO_MIGRATE"])
     new_config['Advanced']['FIRST_RUN'] = int(configval["FIRST_RUN"])
     new_config.write()
     return "Saved"

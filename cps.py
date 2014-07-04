@@ -17,7 +17,8 @@ global title_sort
 def title_sort(title):
     return title
 
-helper.update_db()
+if config.AUTO_MIGRATE:
+    helper.update_db()
 
 if config.DEVELOPMENT:
     web.app.run(host="0.0.0.0", port=config.PORT, debug=True)

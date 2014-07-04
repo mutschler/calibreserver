@@ -20,6 +20,12 @@ from cps.feed import feed
 app = (Flask(__name__))
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
+if config.DEVELOPMENT:
+    from flask_debugtoolbar import DebugToolbarExtension
+
+    toolbar = DebugToolbarExtension(app)
+    app.debug = True
+
 Principal(app)
 
 

@@ -20,8 +20,6 @@ def title_sort(title):
 helper.update_db()
 
 if config.DEVELOPMENT:
-    from flask_debugtoolbar import DebugToolbarExtension
-    toolbar = DebugToolbarExtension(web.app)
     web.app.run(host="0.0.0.0", port=config.PORT, debug=True)
 else:
     http_server = HTTPServer(WSGIContainer(web.app))

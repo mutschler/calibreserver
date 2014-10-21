@@ -5,6 +5,10 @@ library aka CPS
 
 library ist der versuch einen rein python basierenden eBook Server für alle Geräte zu entwickeln. Die offzielle Server app bietet wesentlich mehr funktionen, diese Version ist lediglich dazu gedacht die mit Calibre verwalteten Bücher (dynamisch) aufzulisten. Es handelt sich also nur um einen reinen Content Server. Ich betreibe CalibreServer auf einer Synology DS211j und als Portable version auf einem Raspberry Pi, diese war auch der Grund wieso ich mit der entwicklung angefangen habe. Der ofizielle Server läuft nur mit vielen Anpassungen auf der DS, ich wollte eine Lösung die einfach funktioniert ohne viele Umstände.
 
+Help translate library aka CPS to your Language:
+Hilf bei der Übersetzung in andere Sprachen:
+https://www.transifex.com/projects/p/library-aka-calibreserver/
+
 ## Features:
 - Einlesen der Calibre Datenbank
 - HTML Interface
